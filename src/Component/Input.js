@@ -5,7 +5,7 @@ import { themeColor } from '../Constant'
 export default CustomInput = (props) =>
   <Input
     containerStyle={[{
-      width: '100%', marginLeft : -8,
+      width: '100%', marginLeft: -8,
       marginVertical: 6,
     }, props.containerStyle]}
     inputContainerStyle={[{
@@ -22,7 +22,7 @@ export default CustomInput = (props) =>
 
     multiline={props.multiline}
     secureTextEntry={props.secureTextEntry}
-    onChangeText={(text) => props.textChange(text)}
+    onChangeText={(text) => props.textChange ? props.textChange(text) : null}
     errorStyle={{ color: 'red' }}
 
     leftIcon={

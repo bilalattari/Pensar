@@ -9,7 +9,7 @@ import Text from '../Component/Text'
 import ProjectList from '../Component/ProjectListItem'
 import { CheckBox } from 'react-native-elements'
 import { Icon, SearchBar } from 'react-native-elements';
-
+import ProjectListHeader from '../Component/ProjectListHeader'
 let projectList = [
   { clientName: 'Client', projectNumber: '1234567', status: 'sent', time: '3 hours ago' },
   { clientName: 'Client', projectNumber: '1234567', status: 'sent', time: '3 hours ago' },
@@ -40,7 +40,7 @@ function Home({ navigation }) {
               height: 180, width: '70%',
               resizeMode: "contain",
             }} />
-          <TouchableOpacity style={{ marginTop: 8 }}>
+          <TouchableOpacity style={{ marginTop: 8 }} onPress={() => navigation.navigate('ProjectReport')}>
             <Text color={'#fff'} font={22} bold={true} text={'Create New Project'} />
           </TouchableOpacity>
           <TouchableOpacity style={{ marginTop: 8 }}>
@@ -71,15 +71,17 @@ function Home({ navigation }) {
               value={search}
             />
           </View>
+          <ProjectListHeader />
           <FlatList
             data={projectList}
             keyExtractor={({ item, index }) => `${index}`}
             renderItem={({ item, index }) => <ProjectList project={item} />}
           />
-          <View style={{ justifyContent: "flex-end", flexDirection: "row" }}>
+          <View style={{ justifyContent: "flex-end", flexDirection: "row", height: 70, alignItems: "center" }}>
             {
               ['1', '2', '3'].map((data, index) =>
-                <TouchableOpacity key = {index} style={{ paddingHorizontal: 14, marginTop: 6 }} onPress = {()=> onSelect(index)}>
+                <TouchableOpacity key={index} style={{ paddingHorizontal: 14, marginTop: 6 }}
+                  onPress={() => onSelect(index)}>
                   <Text color={selected === index ? themeColor : '#bbb'} text={data} font={16} bold={true} />
                 </TouchableOpacity>
               )

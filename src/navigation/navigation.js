@@ -7,6 +7,8 @@ import { createStackNavigator } from 'react-navigation-stack'
 import LoginScreen from '../screens/Login'
 import SplashScreen from '../screens/Splash'
 import Home from '../screens/Home'
+import ProjectReport from '../screens/AddProject'
+
 
 const SplashStack = createStackNavigator({
   Splash: {
@@ -22,6 +24,10 @@ const AppStack = createStackNavigator({
   Home: {
     screen: Home,
   },
+  ProjectReport: {
+    screen: ProjectReport,
+  },
+  
 }, { initialRouteName: 'Home', headerMode: null })
 
 const App = createSwitchNavigator({
