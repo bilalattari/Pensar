@@ -83,48 +83,50 @@ function ProjectReport({ navigation }) {
                     <ScrollView>
                         <Text color={themeColor} font={25}
                             bold={true} text={'Start A Report'} />
-                        <Block row={true}>
-                            <Block label={'Locator'} />
-                            <Block label={'Activity Date'} />
-                        </Block>
-                        <Block row={true}>
-                            <Block label={'Docket'} />
-                            <Block label={'DBYD'} />
-                        </Block>
-                        <Block row={true}>
-                            <Block label={'Job'} />
-                            <Block label={'P/O'} />
-                        </Block>
-                        <Text color={themeColor} font={25}
-                            style={{ marginVertical: 15 }}
-                            bold={true} text={'Who are we sending this to?'} />
-                        <Block row={true}>
-                            <Block label={'Client'} />
-                            <Block label={'Client Contact'} />
-                        </Block>
-                        <Block row={true}>
-                            <Block label={'Phone Number'} />
-                            <Block label={'Email'} />
-                        </Block>
+                        <View style = {{marginRight : '12%'}}>
+                            <Block row={true}>
+                                <Block label={'Locator'} />
+                                <Block label={'Activity Date'} />
+                            </Block>
+                            <Block row={true}>
+                                <Block label={'Docket'} />
+                                <Block label={'DBYD'} />
+                            </Block>
+                            <Block row={true}>
+                                <Block label={'Job'} />
+                                <Block label={'P/O'} />
+                            </Block>
+                            <Text color={themeColor} font={25}
+                                style={{ marginVertical: 15 }}
+                                bold={true} text={'Who are we sending this to?'} />
+                            <Block row={true}>
+                                <Block label={'Client'} />
+                                <Block label={'Client Contact'} />
+                            </Block>
+                            <Block row={true}>
+                                <Block label={'Phone Number'} />
+                                <Block label={'Email'} />
+                            </Block>
 
-                        <Text color={themeColor} font={25}
-                            style={{ marginVertical: 15 }}
-                            bold={true} text={'Where are we sending this?'} />
-                        <Block label={'Address'} />
-                        <Block label={'Site Specific Location'} />
-                        <Block label={'Proposed Job Description'} />
+                            <Text color={themeColor} font={25}
+                                style={{ marginVertical: 15 }}
+                                bold={true} text={'Where are we sending this?'} />
+                            <Block label={'Address'} />
+                            <Block label={'Site Specific Location'} />
+                            <Block label={'Proposed Job Description'} />
 
-                        <Text color={themeColor} font={25}
-                            style={{ marginVertical: 15 }}
-                            bold={true} text={'What type of report?'} />
+                            <Text color={themeColor} font={25}
+                                style={{ marginVertical: 15 }}
+                                bold={true} text={'What type of report?'} />
 
-                        <View style={styles.checkBoxDiv}>
-                            <CheckBox label={'Hard Copy'} checked={false} />
-                            <CheckBox label={'Photo Report'} checked={false} />
-                            <CheckBox label={'All Known Services'} checked={false} />
-                            <CheckBox label={'Requested By Client'} checked={false} />
+                            <View style={styles.checkBoxDiv}>
+                                <CheckBox label={'Hard Copy'} checked={false} />
+                                <CheckBox label={'Photo Report'} checked={false} />
+                                <CheckBox label={'All Known Services'} checked={false} />
+                                <CheckBox label={'Requested By Client'} checked={false} />
+                            </View>
+
                         </View>
-
                         <Text color={themeColor} font={25}
                             style={{ marginVertical: 15 }}
                             bold={true} text={'What do I need?'} />
