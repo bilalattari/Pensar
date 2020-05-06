@@ -69,7 +69,22 @@ function DrawImage({navigation, onSave}) {
           </View>
         </MovableView>
       </View>
-      <View></View>
+      <View style={[styles.topBottomView]}>
+        <View
+          style={{
+            flexDirection: 'row',
+            backgroundColor: '#fff',
+            padding: 6,
+            borderRadius: 25,
+            paddingHorizontal: 16,
+          }}>
+          {['C', 'W', 'S', 'G', 'E', 'RW'].map((title) => (
+            <TouchableOpacity style={[styles.undeRedoButton, {marginRight: 2}]}>
+              <Text text={title} color={themeColor} />
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
     </ImageBackground>
   );
 }
