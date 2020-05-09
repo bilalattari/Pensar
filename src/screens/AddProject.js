@@ -66,10 +66,10 @@ function ProjectReport({navigation}) {
 
   function getImage() {
     ImagePicker.openPicker({}).then((images) => {
-      handleDraw(true);
       console.log(images);
       let image = [images];
       setImages(image);
+      handleDraw(true);
     });
   }
   return (
@@ -128,7 +128,10 @@ function ProjectReport({navigation}) {
       <View style={{width: '70%', backgroundColor: '#fff'}}>
         <View style={styles.rightContainer}>
           {showDrawComponent ? (
-            <DrawImage onSave={() => handleDraw(false)} />
+            <DrawImage
+              onSave={() => handleDraw(false)}
+              imagePath={images[0].path}
+            />
           ) : (
             <ScrollView style={{padding: '5%', marginBottom: 72}}>
               <Text
