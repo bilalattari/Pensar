@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +9,28 @@ import {
   FlatList,
   ImageBackground,
 } from 'react-native';
+import Svg, {
+  Circle,
+  Ellipse,
+  G,
+  TSpan,
+  TextPath,
+  Path,
+  Polygon,
+  Polyline,
+  Line,
+  Rect,
+  Use,
+  Symbol,
+  Defs,
+  LinearGradient,
+  RadialGradient,
+  Stop,
+  ClipPath,
+  Pattern,
+  Mask,
+} from 'react-native-svg';
+
 import {themeColor} from '../Constant/index';
 import Input from '../Component/Input';
 import Button from '../Component/Button';
@@ -17,19 +39,61 @@ import MovableView from 'react-native-movable-view';
 import ProjectList from '../Component/ProjectListItem';
 import {Icon, SearchBar} from 'react-native-elements';
 import ImagePicker from 'react-native-image-crop-picker';
+import {SketchCanvas} from '@terrylinla/react-native-sketch-canvas';
 
-function DrawImage({navigation, onSave}) {
-  // const [checked, onChangeChecked] = React.useState(false);
-  // const [password, onChangePassword] = React.useState('');
+function DrawImage({navigation, onSave, imagePath}) {
   const [loader, setLoader] = useState(false);
+  const [linePaths, setlinePaths] = useState([]);
   const [images, setImages] = useState([]);
   const loading = (boolean) => {
     setLoader(boolean);
   };
+
+  function handleLinePath(arr) {
+    setlinePaths(arr);
+  }
+  const canvas = useRef(null);
+  console.log(linePaths, 'linePaths');
   return (
     <ImageBackground
-      source={require('../assets/loginImage.png')}
+      source={{uri: imagePath}}
       style={{flex: 1, height: '100%', width: '100%'}}>
+      <SketchCanvas
+        ref={canvas}
+        style={{
+          flex: 1,
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          top: 0,
+          zIndex: 1200,
+        }}
+        onStrokeStart={(paths) => {
+          console.log(paths, 'start');
+        }}
+        onStrokeEnd={(paths) => {
+          let path = paths.path;
+          let firstPath = path.data[0];
+          let lastPath = path.data[path.data.length - 1];
+          let splitted = firstPath.split(',');
+          let splitted1 = lastPath.split(',');
+          let obj = {
+            x1: splitted[0],
+            y1: splitted[1],
+            x2: splitted1[0],
+            y2: splitted1[1],
+          };
+          linePaths.push(obj);
+          console.log(paths.path, firstPath, lastPath, obj);
+          // setlinePaths(linePaths);
+          handleLinePath(linePaths);
+          canvas.current.clear();
+        }}
+        onPathsChange={(paths) => {}}
+        strokeColor={'red'}
+        strokeWidth={7}
+      />
       <View style={styles.topBottomView}>
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity style={styles.undeRedoButton}>
@@ -47,12 +111,35 @@ function DrawImage({navigation, onSave}) {
           textStyle={{color: '#000'}}
         />
       </View>
-
+      <View
+        style={{
+          flex: 1,
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          top: 0,
+        }}>
+        <Svg>
+          {linePaths.map((coordinates) => {
+            return (
+              <Line
+                x1={coordinates.x1}
+                y1={coordinates.y1}
+                x2={coordinates.x2}
+                y2={coordinates.y2}
+                stroke="black"
+                strokeWidth="10"
+              />
+            );
+          })}
+        </Svg>
+      </View>
       <View
         style={{
           flex: 1,
         }}>
-        <MovableView>
+        {/* <MovableView>
           <View>
             <TextInput
               placeholder={'Enter text '}
@@ -67,7 +154,7 @@ function DrawImage({navigation, onSave}) {
               }}
             />
           </View>
-        </MovableView>
+        </MovableView> */}
       </View>
       <View style={[styles.topBottomView]}>
         <View
@@ -79,6 +166,20 @@ function DrawImage({navigation, onSave}) {
             paddingHorizontal: 16,
           }}>
           {['C', 'W', 'S', 'G', 'E', 'RW'].map((title) => (
+            <TouchableOpacity style={[styles.undeRedoButton, {marginRight: 2}]}>
+              <Text text={title} color={themeColor} />
+            </TouchableOpacity>
+          ))}
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            backgroundColor: '#fff',
+            padding: 6,
+            borderRadius: 25,
+            paddingHorizontal: 16,
+          }}>
+          {['Text', 'Img', 'To', 'Left'].map((title) => (
             <TouchableOpacity style={[styles.undeRedoButton, {marginRight: 2}]}>
               <Text text={title} color={themeColor} />
             </TouchableOpacity>
