@@ -67,7 +67,6 @@ function ProjectReport({navigation}) {
   function getImage() {
     ImagePicker.openPicker({}).then((images) => {
       handleDraw(true);
-      console.log(images);
       let image = [images];
       setImages(image);
     });
