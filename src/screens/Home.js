@@ -9,6 +9,7 @@ import Text from '../Component/Text'
 import ProjectList from '../Component/ProjectListItem'
 import { CheckBox } from 'react-native-elements'
 import { Icon, SearchBar } from 'react-native-elements';
+import ImagePicker from 'react-native-image-crop-picker';
 import ProjectListHeader from '../Component/ProjectListHeader'
 let projectList = [
   { clientName: 'Client', projectNumber: '1234567', status: 'sent', time: '3 hours ago' },

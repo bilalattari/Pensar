@@ -81,7 +81,7 @@ target 'Pensar' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
+  pod 'RNSketchCanvas', :path => '../node_modules/@terrylinla/react-native-sketch-canvas'
 
   target 'PensarTests' do
     inherit! :complete
