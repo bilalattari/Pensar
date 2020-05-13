@@ -116,7 +116,58 @@ class DrawImage extends React.Component {
         <ImageBackground
           source={{ uri: imagePath }}
           style={{ flex: 1, height: '100%', width: '100%' }}>
-          <SketchCanvas
+          
+          {
+            showButtons &&
+            <View style={styles.topBottomView}>
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity
+                  onPress={this.undo} style={styles.undeRedoButton}>
+                  <Image source={require('../assets/Path91.png')} style={{ height: 20, width: 20 }} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={this.redo}
+                  style={styles.undeRedoButton}>
+                  <Image source={require('../assets/circular-arrow.png')}
+
+                    style={{ height: 20, width: 20 }} />
+                </TouchableOpacity>
+              </View>
+              <Button
+                title={'Save'}
+                onPress={() => this.onImageLoad()}
+                backgroundColor={'#fff'}
+                width={172}
+                textStyle={{ color: '#000' }}
+              />
+            </View>
+          }
+         
+          <View style={{ flex: 1 , zIndex : 1200 }}>
+          <View
+            style={{
+              flex: 1,
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              top: 0,
+            }}>
+            <Svg>
+              {linePaths.map((coordinates) => {
+                return (
+                  <Line
+                    x1={coordinates.x1}
+                    y1={coordinates.y1}
+                    x2={coordinates.x2}
+                    y2={coordinates.y2}
+                    stroke={coordinates.strokeColor}
+                    strokeWidth="10"
+                  />
+                );
+              })}
+            </Svg>
+            <SketchCanvas
             // ref={canvas}
             style={{
               flex: 1,
@@ -154,58 +205,10 @@ class DrawImage extends React.Component {
             strokeColor={strokeColor}
             strokeWidth={7}
           />
-          {
-            showButtons &&
-            <View style={styles.topBottomView}>
-              <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity
-                  onPress={this.undo} style={styles.undeRedoButton}>
-                  <Image source={require('../assets/Path91.png')} style={{ height: 20, width: 20 }} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={this.redo}
-                  style={styles.undeRedoButton}>
-                  <Image source={require('../assets/circular-arrow.png')}
-
-                    style={{ height: 20, width: 20 }} />
-                </TouchableOpacity>
-              </View>
-              <Button
-                title={'Save'}
-                onPress={() => this.onImageLoad()}
-                backgroundColor={'#fff'}
-                width={172}
-                textStyle={{ color: '#000' }}
-              />
-            </View>
-          }
-          <View
-            style={{
-              flex: 1,
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              top: 0,
-            }}>
-            <Svg>
-              {linePaths.map((coordinates) => {
-                return (
-                  <Line
-                    x1={coordinates.x1}
-                    y1={coordinates.y1}
-                    x2={coordinates.x2}
-                    y2={coordinates.y2}
-                    stroke={coordinates.strokeColor}
-                    strokeWidth="10"
-                  />
-                );
-              })}
-            </Svg>
           </View>
-          <View style={{ flex: 1 }}>
+       
             {
-              showText &&
+              !showText &&
               <MovableView >
                 <TextInput
                   placeholder={'Enter text '}
@@ -218,32 +221,31 @@ class DrawImage extends React.Component {
                     color: strokeColor,
                     padding: 12,
                     width: 300,
-                    zIndex: 1200,
                     fontSize: 18,
                   }, focused ? {
                     borderColor: '#bbb',
                     borderWidth: 2,
                   } : null]}
                   onBlur={() => this.setState({ focused: false })}
-                />
+                  />
               </MovableView>
             }
             {
               showImage &&
               <MovableView >
                 <Image source={{ uri: image.path }}
-                  style={{ height: 80, width: 80, resizeMode: "contain", zIndex: 1200 }} />
+                  style={{ height: 120, width: 120, resizeMode: "contain", zIndex: 1200 }} />
               </MovableView>
             }
           </View>
           {
             showButtons &&
             <View style={[styles.topBottomView]}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: '#fff',
-                  padding: 6,
+            <View
+            style={{
+              flexDirection: 'row',
+              backgroundColor: '#fff',
+              padding: 6,
                   borderRadius: 25,
                   paddingHorizontal: 16,
                 }}>
