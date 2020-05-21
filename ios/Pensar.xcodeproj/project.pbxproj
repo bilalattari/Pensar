@@ -19,7 +19,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* PensarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* PensarTests.m */; };
 		6B00FF72A94C13C29B929260 /* libPods-Pensar-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4A252EE632FE47157EA0D5B /* libPods-Pensar-tvOSTests.a */; };
 		A37538455309E1A0ED0E45AA /* libPods-Pensar-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D24763F7FF3D4719DF78E2C0 /* libPods-Pensar-tvOS.a */; };
-		C480606C2472A9A900778114 /* Gothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C480606B2472A9A800778114 /* Gothic.ttf */; };
+		C480606C2472A9A900778114 /* CenturyGothic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C480606B2472A9A800778114 /* CenturyGothic.ttf */; };
 		F069515AE9B10B0B20D97AE2 /* libPods-Pensar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9632FDBB9ABC723F8884F94 /* libPods-Pensar.a */; };
 /* End PBXBuildFile section */
 
@@ -61,7 +61,7 @@
 		91506359D0267F3E8BCDA37B /* Pods-Pensar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pensar.debug.xcconfig"; path = "Target Support Files/Pods-Pensar/Pods-Pensar.debug.xcconfig"; sourceTree = "<group>"; };
 		B49A6F018EA7D87DFD19717B /* Pods-Pensar-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pensar-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Pensar-tvOS/Pods-Pensar-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		B9632FDBB9ABC723F8884F94 /* libPods-Pensar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Pensar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C480606B2472A9A800778114 /* Gothic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Gothic.ttf; sourceTree = "<group>"; };
+		C480606B2472A9A800778114 /* CenturyGothic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CenturyGothic.ttf; sourceTree = "<group>"; };
 		C4DF670A6B879DDD77DC55DE /* Pods-Pensar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pensar.release.xcconfig"; path = "Target Support Files/Pods-Pensar/Pods-Pensar.release.xcconfig"; sourceTree = "<group>"; };
 		D24763F7FF3D4719DF78E2C0 /* libPods-Pensar-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Pensar-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E684047A5F97549488BEE23A /* Pods-Pensar-PensarTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pensar-PensarTests.debug.xcconfig"; path = "Target Support Files/Pods-Pensar-PensarTests/Pods-Pensar-PensarTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -211,7 +211,7 @@
 		C480606A2472A99400778114 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
-				C480606B2472A9A800778114 /* Gothic.ttf */,
+				C480606B2472A9A800778114 /* CenturyGothic.ttf */,
 			);
 			path = fonts;
 			sourceTree = "<group>";
@@ -360,7 +360,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C480606C2472A9A900778114 /* Gothic.ttf in Resources */,
+				C480606C2472A9A900778114 /* CenturyGothic.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
@@ -758,7 +758,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = ETRBC2HG3J;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -791,7 +791,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = ETRBC2HG3J;
 				INFOPLIST_FILE = Pensar/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
