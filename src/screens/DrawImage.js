@@ -212,6 +212,44 @@ class DrawImage extends React.Component {
                 );
               })}
             </Svg>
+            <SketchCanvas
+              // ref={canvas}
+              style={{
+                flex: 1,
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                top: 0,
+                zIndex: 1200,
+              }}
+              ref={(e) => (this._canvas = e)}
+              onStrokeStart={(paths) => {
+                console.log(paths, 'start');
+              }}
+              onStrokeEnd={(paths) => {
+                let path = paths.path;
+                let firstPath = path.data[0];
+                let lastPath = path.data[path.data.length - 1];
+                let splitted = firstPath.split(',');
+                let splitted1 = lastPath.split(',');
+                let obj = {
+                  x1: splitted[0],
+                  y1: splitted[1],
+                  x2: splitted1[0],
+                  y2: splitted1[1],
+                  strokeColor: strokeColor,
+                };
+                linePaths.push(obj);
+                // setlinePaths(linePaths);
+                this.handleLinePath(linePaths);
+                this._canvas.clear();
+                // canvas.current.clear();
+              }}
+              // onPathsChange={(paths) => { }}
+              strokeColor={strokeColor}
+              strokeWidth={7}
+            />
           </View>
           <View style={{flex: 1}}>
             {showText && (
