@@ -22,21 +22,12 @@ export default ProjectList = ({project}) => {
         flexDirection: 'row',
       }}>
       <View style={styles.box}>
-        <Text
-          text={project.clientName}
-          color={themeColor}
-          bold={true}
-          font={18}
-        />
-        <Text
-          text={'Address line 1 , line 2 , line 2'}
-          color={themeColor}
-          font={14}
-        />
+        <Text text={project.client} color={themeColor} bold={true} font={18} />
+        <Text text={project.address} color={themeColor} font={14} />
       </View>
       <View style={styles.box}>
         <Text
-          text={project.projectNumber}
+          text={project.project_number}
           color={themeColor}
           font={14}
           bold={true}
