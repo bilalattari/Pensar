@@ -19,6 +19,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import ProjectListHeader from '../Component/ProjectListHeader';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import {createFilter} from 'react-native-search-filter';
 
 let projectList = [
   {
@@ -64,6 +65,9 @@ let projectList = [
     time: '3 hours ago',
   },
 ];
+
+const KEYS_TO_FILTERS = ['client', 'project_number', 'status'];
+
 function Home({navigation}) {
   const [search, onChangeSearch] = React.useState('');
   const [selected, onSelect] = React.useState(0);
@@ -84,6 +88,11 @@ function Home({navigation}) {
         setReports((oldArray) => [...oldArray, data.val()]);
       });
   }, []);
+
+  const edit_report = (e, index) => {
+    navigation.navigate('ProjectReport', {data: reports[index]});
+  };
+  const filteredReports = reports.filter(createFilter(search, KEYS_TO_FILTERS));
 
   return (
     <View style={{flex: 1, flexDirection: 'row'}}>
@@ -141,7 +150,9 @@ function Home({navigation}) {
                 font={22}
                 color={themeColor}
               />
-              <TouchableOpacity style={styles.plusButton}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ProjectReport')}
+                style={styles.plusButton}>
                 <Icon
                   type={'antdesign'}
                   name={'plus'}
@@ -157,15 +168,20 @@ function Home({navigation}) {
               showCancel={false}
               containerStyle={styles.searchContainer}
               inputContainerStyle={{backgroundColor: '#F1F1F1'}}
-              onChangeText={onChangeSearch}
+              onChangeText={(text) => onChangeSearch(text)}
               value={search}
             />
           </View>
           <ProjectListHeader />
           <FlatList
-            data={reports}
+            data={filteredReports}
             keyExtractor={({item, index}) => `${index}`}
-            renderItem={({item, index}) => <ProjectList project={item} />}
+            renderItem={({item, index}) => (
+              <ProjectList
+                edit_report={(e) => edit_report(e, index)}
+                project={item}
+              />
+            )}
           />
           <View
             style={{

@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React, {Component} from 'react';
-import {Icon} from 'react-native-elements';
 import {
   TouchableOpacity,
   ActivityIndicator,
@@ -12,7 +11,8 @@ import {themeColor, pinkColor} from '../Constant/index';
 import LinearGradient from 'react-native-linear-gradient';
 import Text from './Text';
 import Button from './Button';
-export default ProjectList = ({project}) => {
+import MenuCom from './Menu';
+export default ProjectList = ({project, edit_report}) => {
   return (
     <View
       style={{
@@ -57,7 +57,7 @@ export default ProjectList = ({project}) => {
           {justifyContent: 'center', alignItems: 'center', flex: 1.6},
         ]}>
         <TouchableOpacity>
-          <Icon type={'antdesign'} name={'ellipsis1'} />
+          <MenuCom edit_report={edit_report} />
         </TouchableOpacity>
       </View>
     </View>

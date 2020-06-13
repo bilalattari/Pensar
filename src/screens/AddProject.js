@@ -85,6 +85,29 @@ function ProjectReport({navigation}) {
     setLoader(boolean);
   };
 
+  useEffect(() => {
+    if (navigation.state.params) {
+      let data = navigation.state.params.data;
+      setLocator(data.locator);
+      setAcDate(data.activityDate);
+      setDocket(data.docket);
+      setDbyd(data.dbyd);
+      setJob(data.job);
+      setPo(data.po);
+      setClient(data.client);
+      setClientContact(data.clientContact);
+      setPhone(data.phone);
+      setEmail(data.email);
+      setAddress(data.address);
+      setLocation(data.location);
+      setDescription(data.description);
+      setReportType(data.reportType);
+      setNeed(data.need);
+      setUtilityCode(data.utilityCode ? data.utilityCode : '');
+      setNewImage(data.images);
+    }
+  }, []);
+
   function getImage() {
     ImagePicker.openPicker({mediaType: 'photo', includeBase64: true}).then(
       (images) => {
@@ -123,7 +146,7 @@ function ProjectReport({navigation}) {
         let firebaseRef = storage().ref('/').child(`images/${name}`);
         firebaseRef.putFile(images[i].path).then(async (snapshot) => {
           let url = await firebaseRef.getDownloadURL();
-          uploaded.push(url);
+          uploaded.push({path: url});
           if (uploaded.length === images.length) {
             resolve(uploaded);
           }
@@ -154,56 +177,60 @@ function ProjectReport({navigation}) {
     ) {
       let count = Math.random() * 22323200;
       setLoader(true);
-      let report = {
-        locator,
-        activityDate,
-        docket,
-        dbyd,
-        job,
-        po,
-        client,
-        clientContact,
-        phone,
-        email,
-        address,
-        location,
-        description,
-        reportType,
-        need,
-        utilityCode,
-        images: await upload_images(updatedImages),
-        uid: auth().currentUser.uid,
-        project_number: parseInt(count.toFixed()),
-        status: 'Draft',
-        time: new Date().toTimeString(),
-      };
       let key = database().ref('/').child(`reports`).push().key;
-      database()
-        .ref('/')
-        .child(`reports/${key}`)
-        .set(report)
-        .then(() => {
-          setLocator('');
-          setAcDate('');
-          setDocket('');
-          setDbyd('');
-          setJob('');
-          setPo('');
-          setClient('');
-          setClientContact('');
-          setPhone('');
-          setEmail('');
-          setAddress('');
-          setLocation('');
-          setDescription('');
-          setReportType([]);
-          setNeed([]);
-          setUtilityCode('');
-          setImages([]);
-          setNewImage([]);
-          setLoader(false);
-          alert('Report save successfully');
-        });
+      if (navigation.state.params) {
+      } else {
+        let report = {
+          locator,
+          activityDate,
+          docket,
+          dbyd,
+          job,
+          po,
+          client,
+          clientContact,
+          phone,
+          email,
+          address,
+          location,
+          description,
+          reportType,
+          need,
+          utilityCode,
+          images: await upload_images(updatedImages),
+          uid: auth().currentUser.uid,
+          project_number: parseInt(count.toFixed()),
+          status: 'Draft',
+          time: new Date().toTimeString(),
+          key,
+        };
+        database()
+          .ref('/')
+          .child(`reports/${key}`)
+          .set(report)
+          .then(() => {
+            setLocator('');
+            setAcDate('');
+            setDocket('');
+            setDbyd('');
+            setJob('');
+            setPo('');
+            setClient('');
+            setClientContact('');
+            setPhone('');
+            setEmail('');
+            setAddress('');
+            setLocation('');
+            setDescription('');
+            setReportType([]);
+            setNeed([]);
+            setUtilityCode('');
+            setImages([]);
+            setNewImage([]);
+            setLoader(false);
+            alert('Report save successfully');
+          });
+      }
     } else {
       alert('Please fill the required feilds!');
     }
