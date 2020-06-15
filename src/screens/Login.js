@@ -5,13 +5,13 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  AsyncStorage,
 } from 'react-native';
 import Input from '../Component/Input';
 import Button from '../Component/Button';
 import Text from '../Component/Text';
 import {CheckBox} from 'react-native-elements';
-// import auth from '@react-native-firebase/auth';
-// import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 function Login({navigation}) {
   const [email, onChangeEmail] = React.useState('');
   const [checked, onChangeChecked] = React.useState(false);
@@ -25,6 +25,21 @@ function Login({navigation}) {
     onChangeChecked(!checked);
   }
 
+  const login = () => {
+    if (email === 'admin@gmail.com') {
+      alert('Incorrect email/password');
+    } else {
+      auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(async (res) => {
+          await AsyncStorage.setItem('user', res.user.uid);
+          navigation.navigate('Home');
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
+    }
+  };
   return (
     <View style={{flex: 1, flexDirection: 'row'}}>
       <View
@@ -38,6 +53,7 @@ function Login({navigation}) {
             paddingLeft: '8%',
             paddingRight: '4%',
           }}>
+          {/* <ScrollView> */}
           <View style={{flex: 1, justifyContent: 'center'}}>
             <Image
               source={require('../assets/logo.png')}
@@ -68,7 +84,7 @@ function Login({navigation}) {
               height={40}
               gradient={true}
               width={140}
-              onPress={() => navigation.navigate('Home')}
+              onPress={() => login()}
               buttonStyle={{
                 alignSelf: 'flex-start',
                 marginTop: 12,
@@ -101,6 +117,7 @@ function Login({navigation}) {
               </TouchableOpacity>
             </View>
           </View>
+          {/* </ScrollView> */}
         </View>
       </View>
       <View style={{width: '60%', backgroundColor: 'orange'}}>

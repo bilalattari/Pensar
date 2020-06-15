@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React, {Component} from 'react';
-import {Icon} from 'react-native-elements';
 import {
   TouchableOpacity,
   ActivityIndicator,
@@ -12,7 +11,8 @@ import {themeColor, pinkColor} from '../Constant/index';
 import LinearGradient from 'react-native-linear-gradient';
 import Text from './Text';
 import Button from './Button';
-export default ProjectList = ({project}) => {
+import MenuCom from './Menu';
+export default ProjectList = ({project, edit_report, delete_report}) => {
   return (
     <View
       style={{
@@ -22,21 +22,12 @@ export default ProjectList = ({project}) => {
         flexDirection: 'row',
       }}>
       <View style={styles.box}>
-        <Text
-          text={project.clientName}
-          color={themeColor}
-          bold={true}
-          font={18}
-        />
-        <Text
-          text={'Address line 1 , line 2 , line 2'}
-          color={themeColor}
-          font={14}
-        />
+        <Text text={project.client} color={themeColor} bold={true} font={18} />
+        <Text text={project.address} color={themeColor} font={14} />
       </View>
       <View style={styles.box}>
         <Text
-          text={project.projectNumber}
+          text={project.project_number}
           color={themeColor}
           font={14}
           bold={true}
@@ -66,7 +57,7 @@ export default ProjectList = ({project}) => {
           {justifyContent: 'center', alignItems: 'center', flex: 1.6},
         ]}>
         <TouchableOpacity>
-          <Icon type={'antdesign'} name={'ellipsis1'} />
+          <MenuCom edit_report={edit_report} delete_report={delete_report} />
         </TouchableOpacity>
       </View>
     </View>
