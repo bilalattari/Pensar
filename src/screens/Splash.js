@@ -9,7 +9,6 @@ function SplashScreen({navigation}) {
     const getUser = async () => {
       try {
         let user = await AsyncStorage.getItem('user');
-        console.log('user', user);
         if (user !== null) {
           navigation.navigate('Home');
         } else {

@@ -12,7 +12,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Text from './Text';
 import Button from './Button';
 import MenuCom from './Menu';
-export default ProjectList = ({project, edit_report}) => {
+export default ProjectList = ({project, edit_report, delete_report}) => {
   return (
     <View
       style={{
@@ -57,7 +57,7 @@ export default ProjectList = ({project, edit_report}) => {
           {justifyContent: 'center', alignItems: 'center', flex: 1.6},
         ]}>
         <TouchableOpacity>
-          <MenuCom edit_report={edit_report} />
+          <MenuCom edit_report={edit_report} delete_report={delete_report} />
         </TouchableOpacity>
       </View>
     </View>

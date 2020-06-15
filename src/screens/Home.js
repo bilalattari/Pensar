@@ -92,8 +92,31 @@ function Home({navigation}) {
   const edit_report = (e, index) => {
     navigation.navigate('ProjectReport', {data: reports[index]});
   };
-  const filteredReports = reports.filter(createFilter(search, KEYS_TO_FILTERS));
+  const delete_report = (v, i) => {
+    database()
+      .ref('/')
+      .child(`reports/${reports[i].key}`)
+      .remove()
+      .then(() => {
+        let old_reports = [...reports];
+        old_reports.splice(i, 1);
+        setReports(old_reports);
+      });
+  };
+  const chunkArray = (myArray, chunk_size) => {
+    var index = 0;
+    var arrayLength = myArray.length;
+    var tempArray = [];
 
+    for (index = 0; index < arrayLength; index += chunk_size) {
+      let myChunk = myArray.slice(index, index + chunk_size);
+      // Do something if you want with the group
+      tempArray.push(myChunk);
+    }
+
+    return tempArray;
+  };
+  const filteredReports = reports.filter(createFilter(search, KEYS_TO_FILTERS));
   return (
     <View style={{flex: 1, flexDirection: 'row'}}>
       <View
@@ -135,7 +158,7 @@ function Home({navigation}) {
                   navigation.navigate('Login');
                 });
             }}
-            style={{marginTop: 70}}>
+            style={{marginTop: 100}}>
             <Text color={'#fff'} font={22} bold={true} text={'Logout'} />
           </TouchableOpacity>
         </View>
@@ -174,11 +197,12 @@ function Home({navigation}) {
           </View>
           <ProjectListHeader />
           <FlatList
-            data={filteredReports}
+            data={chunkArray(filteredReports, 7)[selected]}
             keyExtractor={({item, index}) => `${index}`}
             renderItem={({item, index}) => (
               <ProjectList
                 edit_report={(e) => edit_report(e, index)}
+                delete_report={(v) => delete_report(v, index)}
                 project={item}
               />
             )}
@@ -190,14 +214,14 @@ function Home({navigation}) {
               height: 70,
               alignItems: 'center',
             }}>
-            {['1', '2', '3'].map((data, index) => (
+            {chunkArray(filteredReports, 7).map((data, index) => (
               <TouchableOpacity
                 key={index}
                 style={{paddingHorizontal: 14, marginTop: 6}}
                 onPress={() => onSelect(index)}>
                 <Text
                   color={selected === index ? themeColor : '#bbb'}
-                  text={data}
+                  text={index + 1}
                   font={16}
                   bold={true}
                 />

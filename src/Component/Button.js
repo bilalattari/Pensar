@@ -25,6 +25,7 @@ export default CustomButton = (props) =>
         props.buttonStyle,
       ]}>
       <TouchableOpacity
+        disabled={props.loader}
         // style={[{
         //   height: props.height ? props.height : 50, width: props.width ? props.width : '85%',
         //   borderRadius: 12, alignSelf: 'center', backgroundColor: themeColor,
@@ -43,6 +44,7 @@ export default CustomButton = (props) =>
     </LinearGradient>
   ) : (
     <TouchableOpacity
+      disabled={props.loader}
       style={[
         {
           height: props.height ? props.height : 50,

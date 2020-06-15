@@ -104,7 +104,7 @@ function ProjectReport({navigation}) {
       setReportType(data.reportType);
       setNeed(data.need);
       setUtilityCode(data.utilityCode ? data.utilityCode : '');
-      setNewImage(data.images);
+      setNewImage(data.images ? data.images : []);
     }
   }, []);
 
@@ -136,7 +136,6 @@ function ProjectReport({navigation}) {
       setNeed((prevArray) => [...prevArray, l]);
     }
   };
-
   const upload_images = (images) => {
     return new Promise((resolve, reject) => {
       var uploaded = [];
@@ -179,6 +178,63 @@ function ProjectReport({navigation}) {
       setLoader(true);
       let key = database().ref('/').child(`reports`).push().key;
       if (navigation.state.params) {
+        let old_images = updatedImages.filter(
+          (data) => data.path.indexOf('firebase') !== -1,
+        );
+        let new_images = await upload_images(
+          updatedImages.filter((data) => data.path.indexOf('file') !== -1),
+        );
+        let report = {
+          locator,
+          activityDate,
+          docket,
+          dbyd,
+          job,
+          po,
+          client,
+          clientContact,
+          phone,
+          email,
+          address,
+          location,
+          description,
+          reportType,
+          need,
+          utilityCode,
+          images: old_images.concat(new_images),
+          uid: navigation.state.params.data.uid,
+          project_number: navigation.state.params.data.project_number,
+          status: 'Draft',
+          time: navigation.state.params.data.time,
+          key: navigation.state.params.data.key,
+        };
+        database()
+          .ref('/')
+          .child(`reports/${navigation.state.params.data.key}`)
+          .set(report)
+          .then(() => {
+            setLocator('');
+            setAcDate('');
+            setDocket('');
+            setDbyd('');
+            setJob('');
+            setPo('');
+            setClient('');
+            setClientContact('');
+            setPhone('');
+            setEmail('');
+            setAddress('');
+            setLocation('');
+            setDescription('');
+            setReportType([]);
+            setNeed([]);
+            setUtilityCode('');
+            setImages([]);
+            setNewImage([]);
+            setLoader(false);
+            alert('Report save successfully');
+            navigation.navigate('Home');
+          });
       } else {
         let report = {
           locator,

@@ -16,6 +16,7 @@ class MenuCom extends React.PureComponent {
     if (e === 'edit') {
       this.props.edit_report(e);
     } else {
+      this.props.delete_report(e);
     }
   };
 
