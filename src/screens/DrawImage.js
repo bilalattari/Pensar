@@ -18,7 +18,7 @@ import MovableView from 'react-native-movable-view';
 import ImagePicker from 'react-native-image-crop-picker';
 import {SketchCanvas} from '@terrylinla/react-native-sketch-canvas';
 import ViewShot from 'react-native-view-shot';
-
+import ModalView from '../Component/Modal';
 class DrawImage extends React.Component {
   constructor(props) {
     super(props);
@@ -29,10 +29,13 @@ class DrawImage extends React.Component {
       showButtons: true,
       showImage: false,
       text: '',
-      showText: false,
+      showText: [],
+      showRoundText: [],
       focused: true,
+      blur: false,
       redoArr: [],
       strokeColor: '#fff',
+      modal: true,
     };
   }
   // function DrawImage({ navigation, onSave, imagePath }) {
@@ -80,17 +83,19 @@ class DrawImage extends React.Component {
 
   getImage = () => {
     if (!this.state.showImage) {
-      ImagePicker.openPicker({mediaType: 'photo'}).then((image) => {
-        this.setState({image, showImage: true});
-      });
+      ImagePicker.openPicker({mediaType: 'photo', cropping: true}).then(
+        (image) => {
+          this.setState({image, showImage: true});
+        },
+      );
     } else {
       this.setState({showImage: false});
     }
   };
   // const canv?as = useRef(null);
   render() {
+    console.log('ttt=>', this.state.showRoundText);
     let {imagePath, onSave, navigation} = this.props;
-    console.log(linePaths, 'linePaths');
     let colors = [
       {text: 'C', backgroundColor: '#fff'},
       {text: 'W', backgroundColor: '#82E8FA'},
@@ -100,6 +105,7 @@ class DrawImage extends React.Component {
       {text: 'RW', backgroundColor: '#B56EFC'},
     ];
     let settingsImg = [
+      {name: 'text_round', image: require('../assets/text_round.png')},
       {name: 'text', image: require('../assets/text.png')},
       {name: 'image', image: require('../assets/image.png')},
       {name: 'vertical', image: require('../assets/vertical.png')},
@@ -111,10 +117,13 @@ class DrawImage extends React.Component {
       strokeColor,
       showText,
       focused,
+      blur,
       text,
       showImage,
       showButtons,
+      showRoundText,
     } = this.state;
+    console.log(image, 'ghous');
     return (
       <ViewShot
         ref={(e) => (this._viewShot = e)}
@@ -131,7 +140,7 @@ class DrawImage extends React.Component {
               left: 0,
               right: 0,
               top: 0,
-              zIndex: 1200,
+              zIndex: 1,
             }}
             ref={(e) => (this._canvas = e)}
             onStrokeStart={(paths) => {
@@ -150,15 +159,26 @@ class DrawImage extends React.Component {
                 y2: splitted1[1],
                 strokeColor: strokeColor,
               };
+
               linePaths.push(obj);
-              // setlinePaths(linePaths);
               this.handleLinePath(linePaths);
               this._canvas.clear();
-              // canvas.current.clear();
             }}
             // onPathsChange={(paths) => { }}
             strokeColor={strokeColor}
             strokeWidth={7}
+            canvasText={{
+              text: 'TEXT',
+              font: '',
+              fontSize: 20,
+              fontColor: 'red',
+              overlay: 'TextOnSketch',
+              anchor: {x: 0, y: 1},
+              position: {x: 100, y: 200},
+              coordinate: 'Absolute',
+              alignment: 'Center',
+              lineHeightMultiple: 1.2,
+            }}
           />
           {showButtons && (
             <View style={styles.topBottomView}>
@@ -181,6 +201,7 @@ class DrawImage extends React.Component {
                 </TouchableOpacity>
               </View>
               <Button
+                borderRadius={100}
                 title={'Save'}
                 onPress={() => this.onImageLoad()}
                 backgroundColor={'#fff'}
@@ -197,7 +218,7 @@ class DrawImage extends React.Component {
               left: 0,
               right: 0,
               top: 0,
-              zIndex: -1,
+              zIndex: 1,
             }}>
             <Svg>
               {linePaths.map((coordinates) => {
@@ -240,6 +261,7 @@ class DrawImage extends React.Component {
                   x2: splitted1[0],
                   y2: splitted1[1],
                   strokeColor: strokeColor,
+                  showBtn: false,
                 };
                 linePaths.push(obj);
                 // setlinePaths(linePaths);
@@ -253,34 +275,47 @@ class DrawImage extends React.Component {
             />
           </View>
           <View style={{flex: 1}}>
-            {showText && (
-              <MovableView>
-                <TextInput
-                  placeholder={'Enter text '}
-                  value={text}
-                  blurOnSubmit={true}
-                  onChangeText={(text) => this.setState({text})}
-                  multiline={true}
-                  onFocus={() => this.setState({focused: true})}
-                  style={[
-                    {
-                      color: strokeColor,
-                      padding: 12,
-                      width: 300,
-                      zIndex: 1200,
-                      fontSize: 18,
-                    },
-                    focused
-                      ? {
-                          borderColor: '#bbb',
-                          borderWidth: 2,
-                        }
-                      : null,
-                  ]}
-                  onBlur={() => this.setState({focused: false})}
-                />
-              </MovableView>
-            )}
+            {showText.map((v, i) => {
+              return (
+                <MovableView key={i}>
+                  <TextInput
+                    placeholder={'Enter text'}
+                    value={v.value}
+                    blurOnSubmit={true}
+                    onChangeText={(text) => {
+                      showText[i].value = text;
+                      this.setState({
+                        showText: showText,
+                      });
+                    }}
+                    multiline={true}
+                    onFocus={() => this.setState({focused: true})}
+                    onBlur={() => this.setState({blur: true})}
+                    style={[
+                      {
+                        color: strokeColor,
+                        padding: 12,
+                        width: 150,
+                        zIndex: 1200,
+                        fontSize: 18,
+                      },
+                      focused
+                        ? {
+                            borderColor: '#bbb',
+                            borderWidth: 2,
+                          }
+                        : null,
+                      blur
+                        ? {
+                            borderWidth: 0,
+                          }
+                        : null,
+                    ]}
+                    onBlur={() => this.setState({focused: false})}
+                  />
+                </MovableView>
+              );
+            })}
             {showImage && (
               <MovableView>
                 <Image
@@ -294,6 +329,48 @@ class DrawImage extends React.Component {
                 />
               </MovableView>
             )}
+          </View>
+          <View style={{flex: 1}}>
+            {showRoundText.map((v, i) => {
+              return (
+                <MovableView key={i}>
+                  <TextInput
+                    blurOnSubmit={true}
+                    value={v.value}
+                    multiline={true}
+                    onChangeText={(text) => {
+                      this.state.showRoundText[i].value = text;
+                      this.setState({
+                        showRoundText: showRoundText,
+                      });
+                    }}
+                    onFocus={() => this.setState({focused: true})}
+                    onBlur={() => this.setState({blur: true})}
+                    style={[
+                      {
+                        color: '#000',
+                        width: 40,
+                        height: 40,
+                        borderRadius: 50,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 1200,
+                        fontSize: 14,
+                        fontWeight: 'bold',
+                        backgroundColor: v.color,
+                      },
+                      focused
+                        ? {
+                            borderColor: '#bbb',
+                            borderWidth: 2,
+                          }
+                        : null,
+                    ]}
+                    onBlur={() => this.setState({focused: false})}
+                  />
+                </MovableView>
+              );
+            })}
           </View>
           {showButtons && (
             <View style={[styles.topBottomView]}>
@@ -330,13 +407,16 @@ class DrawImage extends React.Component {
                   <TouchableOpacity
                     onPress={() => {
                       if (img.name === 'text') {
-                        this.setState({showText: !showText});
-                      }
-                      if (img.name === 'image') {
+                        showText.push({value: '', color: strokeColor});
+                        this.setState({showText: showText});
+                      } else if (img.name === 'image') {
                         this.getImage();
+                      } else if (img.name === 'text_round') {
+                        showRoundText.push({value: '', color: strokeColor});
+                        this.setState({showRoundText: showRoundText});
                       }
                     }}
-                    style={[styles.undeRedoButton, {marginRight: 2}]}>
+                    style={[styles.undeRedoButton, {marginRight: 10}]}>
                     <Image
                       source={img.image}
                       style={{height: 20, resizeMode: 'contain'}}
@@ -344,6 +424,7 @@ class DrawImage extends React.Component {
                   </TouchableOpacity>
                 ))}
               </View>
+              {!this.state.modal && <ModalView />}
             </View>
           )}
         </ImageBackground>
@@ -387,6 +468,14 @@ const styles = StyleSheet.create({
   checkBoxDiv: {flexDirection: 'row', flexWrap: 'wrap', marginVertical: 6},
   flex: {flex: 1},
   rightContainer: {flex: 1},
+  lineBox: {
+    backgroundColor: '#fff',
+    width: 40,
+    height: 40,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default DrawImage;

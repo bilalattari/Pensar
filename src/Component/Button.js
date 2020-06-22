@@ -16,7 +16,7 @@ export default CustomButton = (props) =>
         {
           height: props.height ? props.height : 50,
           width: props.width ? props.width : '85%',
-          borderRadius: 12,
+          borderRadius: props.borderRadius ? props.borderRadius : 12,
           alignSelf: 'center',
           backgroundColor: themeColor,
           justifyContent: 'center',
@@ -49,7 +49,7 @@ export default CustomButton = (props) =>
         {
           height: props.height ? props.height : 50,
           width: props.width ? props.width : '85%',
-          borderRadius: 12,
+          borderRadius: props.borderRadius ? props.borderRadius : 12,
           alignSelf: 'center',
           backgroundColor: props.backgroundColor
             ? props.backgroundColor
