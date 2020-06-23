@@ -19,6 +19,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {SketchCanvas} from '@terrylinla/react-native-sketch-canvas';
 import ViewShot from 'react-native-view-shot';
 import ModalView from '../Component/Modal';
+import Gestures from 'react-native-easy-gestures';
 class DrawImage extends React.Component {
   constructor(props) {
     super(props);
@@ -83,11 +84,9 @@ class DrawImage extends React.Component {
 
   getImage = () => {
     if (!this.state.showImage) {
-      ImagePicker.openPicker({mediaType: 'photo', cropping: true}).then(
-        (image) => {
-          this.setState({image, showImage: true});
-        },
-      );
+      ImagePicker.openPicker({mediaType: 'photo'}).then((image) => {
+        this.setState({image, showImage: true});
+      });
     } else {
       this.setState({showImage: false});
     }
@@ -317,17 +316,17 @@ class DrawImage extends React.Component {
               );
             })}
             {showImage && (
-              <MovableView>
+              <Gestures style={{zIndex: 1200}}>
                 <Image
                   source={{uri: image.path}}
                   style={{
-                    height: 80,
-                    width: 80,
+                    height: '100%',
+                    width: '100%',
                     resizeMode: 'contain',
                     zIndex: 1200,
                   }}
                 />
-              </MovableView>
+              </Gestures>
             )}
           </View>
           <View style={{flex: 1}}>
