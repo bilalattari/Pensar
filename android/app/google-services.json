@@ -1,63 +1,34 @@
 {
   "project_info": {
-    "project_number": "955679345833",
-    "firebase_url": "https://practice-c9ffa.firebaseio.com",
-    "project_id": "practice-c9ffa",
-    "storage_bucket": "practice-c9ffa.appspot.com"
+    "project_number": "8175444495",
+    "firebase_url": "https://pensar-app.firebaseio.com",
+    "project_id": "pensar-app",
+    "storage_bucket": "pensar-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:955679345833:android:ebc093259a01330baf6db8",
-        "android_client_info": {
-          "package_name": "com.FirebasePush.FirebasePush"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "955679345833-ggrmrfos4jjpllelsjs5s3371793blk9.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAZufgDpe1LffGtQefgegMy2gwAF9hnw3Q"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "955679345833-ggrmrfos4jjpllelsjs5s3371793blk9.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:955679345833:android:2aec9e198ccf739eaf6db8",
+        "mobilesdk_app_id": "1:8175444495:android:87a8cfe2180cdda2f2797a",
         "android_client_info": {
           "package_name": "com.pensar"
         }
       },
       "oauth_client": [
         {
-          "client_id": "955679345833-ggrmrfos4jjpllelsjs5s3371793blk9.apps.googleusercontent.com",
+          "client_id": "8175444495-8dirs6r9omok08dlb3371fphapj8jrp0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAZufgDpe1LffGtQefgegMy2gwAF9hnw3Q"
+          "current_key": "AIzaSyDbHzq9uOJw2m5FIrnMS-qodr6D_o1WhkU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "955679345833-ggrmrfos4jjpllelsjs5s3371793blk9.apps.googleusercontent.com",
+              "client_id": "8175444495-8dirs6r9omok08dlb3371fphapj8jrp0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
