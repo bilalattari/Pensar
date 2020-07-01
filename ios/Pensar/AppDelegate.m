@@ -3,6 +3,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <Firebase/Firebase.h>
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -35,6 +36,8 @@ static void InitializeFlipper(UIApplication *application) {
       NSLog(@" %@", name);
     }
   }
+  [FIRApp configure];
+
 #if DEBUG
   InitializeFlipper(application);
 #endif
