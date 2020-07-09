@@ -15,7 +15,7 @@ import Text from '../Component/Text';
 import ProjectList from '../Component/ProjectListItem';
 import {CheckBox} from 'react-native-elements';
 import {Icon, SearchBar} from 'react-native-elements';
-import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker from 'react-native-image-picker';
 import ProjectListHeader from '../Component/ProjectListHeader';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
