@@ -326,8 +326,8 @@ class DrawImage extends React.Component {
                 let obj = {
                   x1: splitted[0],
                   y1: splitted[1],
-                  x2: splitted1[0],
-                  y2: splitted1[1],
+                  x2: this.state.topBottom ? splitted[0] : splitted1[0],
+                  y2: this.state.rightLeft ? splitted[1] : splitted1[1],
                   strokeColor: strokeColor,
                   showBtn: false,
                   rightLeft: this.state.rightLeft,
@@ -350,8 +350,7 @@ class DrawImage extends React.Component {
               <Gestures
                 style={{
                   zIndex: 1200,
-                  minWidth: 120,
-                  maxWidth: '100%',
+                  width: 120,
                   position: 'absolute',
                   marginTop: 80,
                   marginLeft: 5,
@@ -375,19 +374,14 @@ class DrawImage extends React.Component {
                   }}
                   style={[
                     {
-                      color: v.color,
+                      color: '#000',
                       width: '100%',
                       zIndex: 1,
                       fontSize: 20,
+                      backgroundColor: '#fff',
+                      borderColor: v.color,
+                      borderWidth: 2,
                     },
-                    v.focused
-                      ? {
-                          backgroundColor:
-                            strokeColor === '#fff' ? '#000' : '#fff',
-                          borderColor: '#000',
-                          borderWidth: 2,
-                        }
-                      : null,
                   ]}
                   onBlur={() => {
                     showText[i].focused = false;
@@ -429,7 +423,6 @@ class DrawImage extends React.Component {
               )
             );
           })}
-
           {showRoundText.map((v, i) => {
             console.log('hide', v.hide);
             return (
@@ -445,7 +438,7 @@ class DrawImage extends React.Component {
                     backgroundColor: v.color,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    borderRadius: 50,
+                    borderRadius: 100,
                     position: 'absolute',
                     marginTop: 80,
                     marginLeft: 10,
