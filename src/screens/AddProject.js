@@ -18,7 +18,7 @@ import ImagePicker from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
-
+import AIcon from 'react-native-vector-icons/AntDesign';
 const Block = ({children, row, label, value, onChangeText}) => (
   <View style={{flex: 1, flexDirection: row ? 'row' : 'column'}}>
     {children ? (
@@ -88,6 +88,7 @@ function ProjectReport({navigation}) {
   const [images, setImages] = useState([]);
   const [updatedImages, setNewImage] = useState([]);
   const [showDrawComponent, handleDraw] = useState(false);
+  const [flag, setFlag] = useState(false);
 
   const loading = (boolean) => {
     setLoader(boolean);
@@ -626,16 +627,34 @@ function ProjectReport({navigation}) {
               />
               <View style={styles.checkBoxDiv}>
                 {updatedImages.map((data, index) => (
-                  <Image
-                    source={{uri: data.path}}
-                    style={{
-                      height: 172,
-                      width: 200,
-                      resizeMode: 'contain',
-                      marginVertical: 6,
-                      marginRight: 6,
-                    }}
-                  />
+                  <View>
+                    <TouchableOpacity
+                      style={{
+                        position: 'absolute',
+                        right: 5,
+                        top: 0,
+                        zIndex: 1,
+                      }}
+                      onPress={() => {
+                        let old_images = updatedImages;
+                        old_images.splice(index, 1);
+                        setNewImage(old_images);
+                        setFlag(!flag);
+                      }}
+                      activeOpacity={0.6}>
+                      <AIcon name="delete" size={26} color={'red'} />
+                    </TouchableOpacity>
+                    <Image
+                      source={{uri: data.path}}
+                      style={{
+                        height: 172,
+                        width: 200,
+                        resizeMode: 'contain',
+                        marginVertical: 6,
+                        marginRight: 6,
+                      }}
+                    />
+                  </View>
                 ))}
                 <TouchableOpacity
                   style={styles.getImageButton}

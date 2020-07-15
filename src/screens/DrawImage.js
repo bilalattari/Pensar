@@ -43,6 +43,7 @@ class DrawImage extends React.Component {
       text: '',
       showText: [],
       showRoundText: [],
+      showNormalText: [],
       focused: false,
       blur: false,
       redoArr: [],
@@ -125,6 +126,7 @@ class DrawImage extends React.Component {
       {text: 'RW', backgroundColor: '#B56EFC'},
     ];
     let settingsImg = [
+      {name: 'text-normal', image: require('../assets/normal-text.png')},
       {name: 'text_round', image: require('../assets/text_round.png')},
       {name: 'text', image: require('../assets/text.png')},
       {name: 'image', image: require('../assets/image.png')},
@@ -142,6 +144,7 @@ class DrawImage extends React.Component {
       showImage,
       showButtons,
       showRoundText,
+      showNormalText,
     } = this.state;
     console.log(image, 'ghous');
     return (
@@ -264,7 +267,7 @@ class DrawImage extends React.Component {
                       x2={coordinates.x2}
                       y2={coordinates.y2}
                       stroke={coordinates.strokeColor}
-                      strokeWidth="10"
+                      strokeWidth="6"
                     />
                     {coordinates.rightLeft ? (
                       <Icon
@@ -341,7 +344,7 @@ class DrawImage extends React.Component {
               }}
               // onPathsChange={(paths) => { }}
               strokeColor={strokeColor}
-              strokeWidth={7}
+              strokeWidth={6}
             />
           </View>
           {/* <View style={{flex: 1,backgroundColor: "red",zIndex: 1200}}> */}
@@ -386,6 +389,62 @@ class DrawImage extends React.Component {
                   onBlur={() => {
                     showText[i].focused = false;
                     this.setState({showText: showText});
+                  }}
+                />
+                {showButtons && (
+                  <View style={styles.dragIcon}>
+                    <Icon name="arrow-move" size={18} color="#000" />
+                  </View>
+                )}
+              </Gestures>
+            );
+          })}
+          {showNormalText.map((v, i) => {
+            return (
+              <Gestures
+                style={{
+                  zIndex: 1200,
+                  maxWidth: 100,
+                  position: 'absolute',
+                  marginTop: 80,
+                  marginLeft: 5,
+                }}
+                key={i}>
+                <TextInput
+                  placeholder={'Enter text'}
+                  value={v.value}
+                  blurOnSubmit={true}
+                  onChangeText={(text) => {
+                    showNormalText[i].value = text;
+                    this.setState({
+                      showNormalText: showNormalText,
+                    });
+                  }}
+                  placeholderTextColor={'#ccc'}
+                  multiline={true}
+                  onFocus={() => {
+                    showNormalText[i].focused = true;
+                    this.setState({showNormalText: showNormalText});
+                  }}
+                  style={[
+                    {
+                      color: v.color,
+                      width: '100%',
+                      zIndex: 1,
+                      fontSize: 20,
+                      backgroundColor: 'transparent',
+                      borderColor: v.color,
+                      borderWidth: 2,
+                    },
+                    !v.focused
+                      ? {
+                          borderWidth: 0,
+                        }
+                      : null,
+                  ]}
+                  onBlur={() => {
+                    showNormalText[i].focused = false;
+                    this.setState({showNormalText: showNormalText});
                   }}
                 />
                 {showButtons && (
@@ -562,6 +621,13 @@ class DrawImage extends React.Component {
                           rightLeft: !this.state.rightLeft,
                           topBottom: false,
                         });
+                      } else if (img.name === 'text-normal') {
+                        showNormalText.push({
+                          value: '',
+                          color: strokeColor,
+                          hide: false,
+                        });
+                        this.setState({showNormalText: showNormalText});
                       }
                     }}
                     style={[styles.undeRedoButton, {marginRight: 10}]}>
@@ -634,7 +700,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     justifyContent: 'center',
     position: 'absolute',
-    right: 0,
+    right: -10,
     top: 15,
     zIndex: 1,
     alignItems: 'center',
