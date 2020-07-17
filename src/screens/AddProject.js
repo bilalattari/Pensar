@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,31 +6,32 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import {themeColor} from '../Constant/index';
+import { themeColor } from '../Constant/index';
 import Input from '../Component/Input';
 import DrawImage from '../screens/DrawImage';
 import Button from '../Component/Button';
 import Text from '../Component/Text';
 import MovableView from 'react-native-movable-view';
 import ProjectList from '../Component/ProjectListItem';
-import {Icon, SearchBar} from 'react-native-elements';
+import { Icon, SearchBar } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import AIcon from 'react-native-vector-icons/AntDesign';
-const Block = ({children, row, label, value, onChangeText}) => (
-  <View style={{flex: 1, flexDirection: row ? 'row' : 'column'}}>
+const Block = ({ children, row, label, value, onChangeText }) => (
+  <View style={{ flex: 1, flexDirection: row ? 'row' : 'column' }}>
     {children ? (
       children
     ) : (
-      <Input onChangeText={onChangeText} value={value} label={label} />
-    )}
+        <Input onChangeText={onChangeText} value={value} label={label} />
+      )}
   </View>
 );
 
-const CheckBox = ({label, checked, backgroundColor, handleClick}) => (
+const CheckBox = ({ label, checked, backgroundColor, handleClick, disabled }) => (
   <TouchableOpacity
+    disabled={disabled}
     onPress={() => handleClick(label, checked)}
     style={{
       flexDirection: 'row',
@@ -43,7 +44,7 @@ const CheckBox = ({label, checked, backgroundColor, handleClick}) => (
       name={!checked ? 'checkbox-blank-outline' : 'check-box-outline'}
       color={themeColor}
       size={27}
-      containerStyle={{marginTop: 2}}
+      containerStyle={{ marginTop: 2 }}
     />
     <Text
       color={themeColor}
@@ -67,7 +68,7 @@ const options = {
     cancel: true,
   },
 };
-function ProjectReport({navigation}) {
+function ProjectReport({ navigation }) {
   const [locator, setLocator] = useState('');
   const [activityDate, setAcDate] = useState('');
   const [docket, setDocket] = useState('');
@@ -89,6 +90,7 @@ function ProjectReport({navigation}) {
   const [updatedImages, setNewImage] = useState([]);
   const [showDrawComponent, handleDraw] = useState(false);
   const [flag, setFlag] = useState(false);
+  const [overImage, setOverImage] = useState("");
 
   const loading = (boolean) => {
     setLoader(boolean);
@@ -114,6 +116,8 @@ function ProjectReport({navigation}) {
       setNeed(data.need);
       setUtilityCode(data.utilityCode ? data.utilityCode : '');
       setNewImage(data.images ? data.images : []);
+      setOverImage(data.overview_image)
+      console.log("immm=>", data.images)
     }
   }, []);
 
@@ -126,7 +130,7 @@ function ProjectReport({navigation}) {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        const source = {uri: response.uri};
+        const source = { uri: response.uri };
         setImages([source]);
         handleDraw(true);
       }
@@ -160,7 +164,7 @@ function ProjectReport({navigation}) {
         let firebaseRef = storage().ref('/').child(`images/${name}`);
         firebaseRef.putFile(images[i].path).then(async (snapshot) => {
           let url = await firebaseRef.getDownloadURL();
-          uploaded.push({path: url});
+          uploaded.push({ path: url });
           if (uploaded.length === images.length) {
             resolve(uploaded);
           }
@@ -196,8 +200,8 @@ function ProjectReport({navigation}) {
         let old_images = updatedImages.filter(
           (data) => data.path.indexOf('firebase') !== -1,
         );
-        let new_images = await upload_images(
-          updatedImages.filter((data) => data.path.indexOf('file') !== -1),
+        let new_images = updatedImages.filter((data) => data.path.indexOf('firebase') === -1).length && await upload_images(
+          updatedImages.filter((data) => data.path.indexOf('firebase') === -1),
         );
         let report = {
           locator,
@@ -216,6 +220,7 @@ function ProjectReport({navigation}) {
           reportType,
           need,
           utilityCode,
+          overview_image: overImage,
           images: old_images.concat(new_images),
           uid: navigation.state.params.data.uid,
           project_number: navigation.state.params.data.project_number,
@@ -247,9 +252,10 @@ function ProjectReport({navigation}) {
             setImages([]);
             setNewImage([]);
             setLoader(false);
+            setOverImage("")
             alert('Report save successfully');
             navigation.navigate('Home');
-          });
+          })
       } else {
         let report = {
           locator,
@@ -268,6 +274,7 @@ function ProjectReport({navigation}) {
           reportType,
           need,
           utilityCode,
+          overview_image: overImage,
           images: await upload_images(updatedImages),
           uid: auth().currentUser.uid,
           project_number: parseInt(count.toFixed()),
@@ -306,15 +313,16 @@ function ProjectReport({navigation}) {
       alert('Please fill the required feilds!');
     }
   };
+  let edit = navigation.state.params;
   return (
-    <View style={{flex: 1, flexDirection: 'row'}}>
+    <View style={{ flex: 1, flexDirection: 'row' }}>
       {!showDrawComponent && (
         <View
           style={{
             width: '30%',
             backgroundColor: '#466AA5',
           }}>
-          <View style={{paddingLeft: '8%'}}>
+          <View style={{ paddingLeft: '8%' }}>
             <Image
               source={require('../assets/whiteLogo.png')}
               style={{
@@ -325,28 +333,28 @@ function ProjectReport({navigation}) {
             />
             <Text
               color={'#fff'}
-              style={{marginTop: 12}}
+              style={{ marginTop: 12 }}
               font={20}
               bold={true}
               text={'Project Name'}
             />
             <Text
               color={'#fff'}
-              style={{marginTop: 12}}
+              style={{ marginTop: 12 }}
               font={20}
               bold={true}
               text={'Project Detail'}
             />
             <Text
               color={'#fff'}
-              style={{marginTop: 12}}
+              style={{ marginTop: 12 }}
               font={20}
               bold={true}
               text={'Add New Page'}
             />
             <Text
               color={'#fff'}
-              style={{marginTop: 12}}
+              style={{ marginTop: 12 }}
               font={20}
               bold={true}
               text={'Complete'}
@@ -354,7 +362,7 @@ function ProjectReport({navigation}) {
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Text
                 color={'#fff'}
-                style={{marginTop: 12}}
+                style={{ marginTop: 12 }}
                 font={20}
                 bold={true}
                 text={'Back'}
@@ -372,334 +380,371 @@ function ProjectReport({navigation}) {
           {showDrawComponent ? (
             <DrawImage
               onSave={(uri) => {
-                console.log(uri, 'onloadddddddddddddddddddddddddddd');
-                updatedImages.push({path: uri});
+                updatedImages.push({ path: uri });
                 handleDraw(false);
                 setNewImage(updatedImages);
               }}
               hideDraw={() => handleDraw(false)}
               imagePath={images[0].uri}
+              need={need}
             />
           ) : (
-            <ScrollView style={{padding: '5%', marginBottom: 72}}>
-              <Text
-                color={themeColor}
-                font={25}
-                bold={true}
-                text={'Start A Report'}
-              />
-              <View style={{marginRight: '12%'}}>
-                <Block row={true}>
-                  <Block
-                    value={locator}
-                    onChangeText={(text) => setLocator(text)}
-                    label={'Locator'}
-                  />
-                  <Block
-                    value={activityDate}
-                    onChangeText={(text) => setAcDate(text)}
-                    label={'Activity Date'}
-                  />
-                </Block>
-                <Block row={true}>
-                  <Block
-                    value={docket}
-                    onChangeText={(text) => setDocket(text)}
-                    label={'Docket'}
-                  />
-                  <Block
-                    value={dbyd}
-                    onChangeText={(text) => setDbyd(text)}
-                    label={'DBYD'}
-                  />
-                </Block>
-                <Block row={true}>
-                  <Block
-                    value={job}
-                    onChangeText={(text) => setJob(text)}
-                    label={'Job'}
-                  />
-                  <Block
-                    value={po}
-                    onChangeText={(text) => setPo(text)}
-                    label={'P/O'}
-                  />
-                </Block>
+              <ScrollView style={{ padding: '5%', marginBottom: 72 }}>
                 <Text
                   color={themeColor}
                   font={25}
-                  style={{marginVertical: 15}}
                   bold={true}
-                  text={'Who are we sending this to?'}
+                  text={'Start A Report'}
                 />
-                <Block row={true}>
+                <View style={{ marginRight: '12%' }}>
+                  <Block row={true}>
+                    <Block
+                      value={locator}
+                      onChangeText={(text) => setLocator(text)}
+                      label={'Locator'}
+                    />
+                    <Block
+                      value={activityDate}
+                      onChangeText={(text) => setAcDate(text)}
+                      label={'Activity Date'}
+                    />
+                  </Block>
+                  <Block row={true}>
+                    <Block
+                      value={docket}
+                      onChangeText={(text) => setDocket(text)}
+                      label={'Docket'}
+                    />
+                    <Block
+                      value={dbyd}
+                      onChangeText={(text) => setDbyd(text)}
+                      label={'DBYD'}
+                    />
+                  </Block>
+                  <Block row={true}>
+                    <Block
+                      value={job}
+                      onChangeText={(text) => setJob(text)}
+                      label={'Job'}
+                    />
+                    <Block
+                      value={po}
+                      onChangeText={(text) => setPo(text)}
+                      label={'P/O'}
+                    />
+                  </Block>
+                  <Text
+                    color={themeColor}
+                    font={25}
+                    style={{ marginVertical: 15 }}
+                    bold={true}
+                    text={'Who are we sending this to?'}
+                  />
+                  <Block row={true}>
+                    <Block
+                      value={client}
+                      onChangeText={(text) => setClient(text)}
+                      label={'Client'}
+                    />
+                    <Block
+                      value={clientContact}
+                      onChangeText={(text) => setClientContact(text)}
+                      label={'Client Contact'}
+                    />
+                  </Block>
+                  <Block row={true}>
+                    <Block
+                      value={phone}
+                      onChangeText={(text) => setPhone(text)}
+                      label={'Phone Number'}
+                    />
+                    <Block
+                      value={email}
+                      onChangeText={(text) => setEmail(text)}
+                      label={'Email'}
+                    />
+                  </Block>
+
+                  <Text
+                    color={themeColor}
+                    font={25}
+                    style={{ marginVertical: 15 }}
+                    bold={true}
+                    text={'Where are we sending this?'}
+                  />
                   <Block
-                    value={client}
-                    onChangeText={(text) => setClient(text)}
-                    label={'Client'}
+                    value={address}
+                    onChangeText={(text) => setAddress(text)}
+                    label={'Address'}
                   />
                   <Block
-                    value={clientContact}
-                    onChangeText={(text) => setClientContact(text)}
-                    label={'Client Contact'}
-                  />
-                </Block>
-                <Block row={true}>
-                  <Block
-                    value={phone}
-                    onChangeText={(text) => setPhone(text)}
-                    label={'Phone Number'}
+                    value={location}
+                    onChangeText={(text) => setLocation(text)}
+                    label={'Site Specific Location'}
                   />
                   <Block
-                    value={email}
-                    onChangeText={(text) => setEmail(text)}
-                    label={'Email'}
+                    value={description}
+                    onChangeText={(text) => setDescription(text)}
+                    label={'Proposed Job Description'}
                   />
-                </Block>
 
-                <Text
-                  color={themeColor}
-                  font={25}
-                  style={{marginVertical: 15}}
-                  bold={true}
-                  text={'Where are we sending this?'}
-                />
-                <Block
-                  value={address}
-                  onChangeText={(text) => setAddress(text)}
-                  label={'Address'}
-                />
-                <Block
-                  value={location}
-                  onChangeText={(text) => setLocation(text)}
-                  label={'Site Specific Location'}
-                />
-                <Block
-                  value={description}
-                  onChangeText={(text) => setDescription(text)}
-                  label={'Proposed Job Description'}
-                />
-
-                <Text
-                  color={themeColor}
-                  font={25}
-                  style={{marginVertical: 15}}
-                  bold={true}
-                  text={'What type of report?'}
-                />
-
-                <View style={styles.checkBoxDiv}>
-                  <CheckBox
-                    handleClick={set_report}
-                    label={'Hard Copy'}
-                    checked={reportType.indexOf('Hard Copy') !== -1}
+                  <Text
+                    color={themeColor}
+                    font={25}
+                    style={{ marginVertical: 15 }}
+                    bold={true}
+                    text={'What type of report?'}
                   />
-                  <CheckBox
-                    handleClick={set_report}
-                    label={'Photo Report'}
-                    checked={reportType.indexOf('Photo Report') !== -1}
-                  />
-                  <CheckBox
-                    handleClick={set_report}
-                    label={'All Known Services'}
-                    checked={reportType.indexOf('All Known Services') !== -1}
-                  />
-                  <CheckBox
-                    handleClick={set_report}
-                    label={'Requested By Client'}
-                    checked={reportType.indexOf('Requested By Client') !== -1}
-                  />
-                </View>
-              </View>
-              <Text
-                color={themeColor}
-                font={25}
-                style={{marginVertical: 15}}
-                bold={true}
-                text={'What do I need?'}
-              />
-              <View style={styles.checkBoxDiv}>
-                <CheckBox
-                  handleClick={set_need}
-                  label={'White - Telecommunications (C)'}
-                  checked={
-                    need.indexOf('White - Telecommunications (C)') !== -1
-                  }
-                />
-                <CheckBox
-                  handleClick={set_need}
-                  label={'Blue - Water (W)'}
-                  backgroundColor={'#82E8FA'}
-                  checked={need.indexOf('Blue - Water (W)') !== -1}
-                />
-                <CheckBox
-                  handleClick={set_need}
-                  label={'Cream - Sewer (S)'}
-                  backgroundColor={'#FFF8D9'}
-                  checked={need.indexOf('Cream - Sewer (S)') !== -1}
-                />
-                <CheckBox
-                  handleClick={set_need}
-                  label={'Green - Storm Water(SW)'}
-                  backgroundColor={'#82FA94'}
-                  checked={need.indexOf('Green - Storm Water(SW)') !== -1}
-                />
-                <CheckBox
-                  handleClick={set_need}
-                  label={'Orange - Electrical (E)'}
-                  backgroundColor={'#FDAC4C'}
-                  checked={need.indexOf('Orange - Electrical (E)') !== -1}
-                />
-                <CheckBox
-                  handleClick={set_need}
-                  label={'Red - Fire Service (F)'}
-                  backgroundColor={'#FF3434'}
-                  checked={need.indexOf('Red - Fire Service (F)') !== -1}
-                />
-                <CheckBox
-                  handleClick={set_need}
-                  label={'Purple - Recycled Water (RW)'}
-                  backgroundColor={'#B56EFC'}
-                  checked={need.indexOf('Purple - Recycled Water (RW)') !== -1}
-                />
-                <CheckBox
-                  handleClick={set_need}
-                  label={'Pink - Unidentified/ Unknown Services'}
-                  backgroundColor={'#FA82F1'}
-                  checked={
-                    need.indexOf('Pink - Unidentified/ Unknown Services') !== -1
-                  }
-                />
-                <CheckBox
-                  handleClick={set_need}
-                  label={'Yellow - Gas (G)'}
-                  backgroundColor={'#FFEC5C'}
-                  checked={need.indexOf('Yellow - Gas (G)') !== -1}
-                />
-              </View>
 
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  paddingHorizontal: 8,
-                }}>
-                <Text
-                  color={themeColor}
-                  font={22}
-                  bold={true}
-                  text={'Utility Code'}
-                />
-                <Text
-                  color={themeColor}
-                  font={22}
-                  bold={true}
-                  text={'Description of Locate'}
-                />
-                <Text
-                  color={themeColor}
-                  font={22}
-                  bold={true}
-                  text={'Quality of Locate'}
-                />
-              </View>
-              <Block>
-                <Input
-                  textChange={(text) => setUtilityCode(text)}
-                  value={utilityCode}
-                  height={200}
-                  inputContainerStyle={{
-                    borderWidth: 0,
-                    borderBottomWidth: 0,
-                    width: '99%',
-                    alignSelf: 'center',
-                    marginLeft: 12,
-                  }}
-                />
-              </Block>
-
-              <Text
-                color={themeColor}
-                font={25}
-                style={{marginVertical: 15}}
-                bold={true}
-                text={'Services Location Report'}
-              />
-              <View style={styles.checkBoxDiv}>
-                {updatedImages.map((data, index) => (
-                  <View>
-                    <TouchableOpacity
-                      style={{
-                        position: 'absolute',
-                        right: 5,
-                        top: 0,
-                        zIndex: 1,
-                      }}
-                      onPress={() => {
-                        let old_images = updatedImages;
-                        old_images.splice(index, 1);
-                        setNewImage(old_images);
-                        setFlag(!flag);
-                      }}
-                      activeOpacity={0.6}>
-                      <AIcon name="delete" size={26} color={'red'} />
-                    </TouchableOpacity>
-                    <Image
-                      source={{uri: data.path}}
-                      style={{
-                        height: 172,
-                        width: 200,
-                        resizeMode: 'contain',
-                        marginVertical: 6,
-                        marginRight: 6,
-                      }}
+                  <View style={styles.checkBoxDiv}>
+                    <CheckBox
+                      handleClick={set_report}
+                      label={'Hard Copy'}
+                      checked={reportType.indexOf('Hard Copy') !== -1}
+                    />
+                    <CheckBox
+                      handleClick={set_report}
+                      label={'Photo Report'}
+                      checked={reportType.indexOf('Photo Report') !== -1}
+                    />
+                    <CheckBox
+                      handleClick={set_report}
+                      label={'All Known Services'}
+                      checked={reportType.indexOf('All Known Services') !== -1}
+                    />
+                    <CheckBox
+                      handleClick={set_report}
+                      label={'Requested By Client'}
+                      checked={reportType.indexOf('Requested By Client') !== -1}
                     />
                   </View>
-                ))}
-                <TouchableOpacity
-                  style={styles.getImageButton}
-                  onPress={getImage}>
-                  <Icon
-                    type={'font-awesome'}
-                    name={'camera'}
-                    color={'#bbb'}
-                    size={52}
+                </View>
+                <Text
+                  color={themeColor}
+                  font={25}
+                  style={{ marginVertical: 15 }}
+                  bold={true}
+                  text={'What do I need?'}
+                />
+                <View style={styles.checkBoxDiv}>
+                  <CheckBox
+                    handleClick={set_need}
+                    disabled={edit}
+                    label={'White - Telecommunications (C)'}
+                    checked={
+                      need.indexOf('White - Telecommunications (C)') !== -1
+                    }
                   />
-                </TouchableOpacity>
-              </View>
-              <Block row={true}>
-                <Button
-                  loaderColor={'#4B88BC'}
-                  onPress={() => save_report()}
-                  width={172}
-                  title={'Save'}
-                  loader={loader}
-                  buttonStyle={{
-                    backgroundColor: '#fff',
-                    borderColor: '#4B88BC',
-                    marginVertical: 45,
-                    borderWidth: 1,
-                    borderRadius: 25,
-                    marginRight: 12,
-                  }}
-                  textStyle={{color: '#4B88BC'}}
+                  <CheckBox
+                    handleClick={set_need}
+                    disabled={edit}
+                    label={'Blue - Water (W)'}
+                    backgroundColor={'#82E8FA'}
+                    checked={need.indexOf('Blue - Water (W)') !== -1}
+                  />
+                  <CheckBox
+                    handleClick={set_need}
+                    disabled={edit}
+                    label={'Cream - Sewer (S)'}
+                    backgroundColor={'#FFF8D9'}
+                    checked={need.indexOf('Cream - Sewer (S)') !== -1}
+                  />
+                  <CheckBox
+                    handleClick={set_need}
+                    disabled={edit}
+                    label={'Green - Storm Water(SW)'}
+                    backgroundColor={'#82FA94'}
+                    checked={need.indexOf('Green - Storm Water(SW)') !== -1}
+                  />
+                  <CheckBox
+                    handleClick={set_need}
+                    disabled={edit}
+                    label={'Orange - Electrical (E)'}
+                    backgroundColor={'#FDAC4C'}
+                    checked={need.indexOf('Orange - Electrical (E)') !== -1}
+                  />
+                  <CheckBox
+                    handleClick={set_need}
+                    disabled={edit}
+                    label={'Red - Fire Service (F)'}
+                    backgroundColor={'#FF3434'}
+                    checked={need.indexOf('Red - Fire Service (F)') !== -1}
+                  />
+                  <CheckBox
+                    handleClick={set_need}
+                    disabled={edit}
+                    label={'Purple - Recycled Water (RW)'}
+                    backgroundColor={'#B56EFC'}
+                    checked={need.indexOf('Purple - Recycled Water (RW)') !== -1}
+                  />
+                  <CheckBox
+                    handleClick={set_need}
+                    disabled={edit}
+                    label={'Pink - Unidentified/ Unknown Services'}
+                    backgroundColor={'#FA82F1'}
+                    checked={
+                      need.indexOf('Pink - Unidentified/ Unknown Services') !== -1
+                    }
+                  />
+                  <CheckBox
+                    handleClick={set_need}
+                    disabled={edit}
+                    label={'Yellow - Gas (G)'}
+                    backgroundColor={'#FFEC5C'}
+                    checked={need.indexOf('Yellow - Gas (G)') !== -1}
+                  />
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: 8,
+                  }}>
+                  <Text
+                    color={themeColor}
+                    font={22}
+                    bold={true}
+                    text={'Utility Code'}
+                  />
+                  <Text
+                    color={themeColor}
+                    font={22}
+                    bold={true}
+                    text={'Description of Locate'}
+                  />
+                  <Text
+                    color={themeColor}
+                    font={22}
+                    bold={true}
+                    text={'Quality of Locate'}
+                  />
+                </View>
+                <Block>
+                  <Input
+                    textChange={(text) => setUtilityCode(text)}
+                    value={utilityCode}
+                    height={200}
+                    inputContainerStyle={{
+                      borderWidth: 0,
+                      borderBottomWidth: 0,
+                      width: '99%',
+                      alignSelf: 'center',
+                      marginLeft: 12,
+                    }}
+                  />
+                </Block>
+                {overImage ?
+                  <>
+                    <Text
+                      color={themeColor}
+                      font={25}
+                      style={{ marginVertical: 15 }}
+                      bold={true}
+                      text={'Overview Image'}
+                    />
+                    <View>
+                      <TouchableOpacity onPress={() => {
+                        const source = { uri: overImage };
+                        setImages([source]);
+                        handleDraw(true);
+                      }}>
+                        <Image
+                          source={{ uri: overImage }}
+                          style={{
+                            height: 172,
+                            width: 200,
+                            resizeMode: 'contain',
+                            marginVertical: 6,
+                            marginRight: 6,
+                          }}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </>
+                  :
+                  null
+                }
+                <Text
+                  color={themeColor}
+                  font={25}
+                  style={{ marginVertical: 15 }}
+                  bold={true}
+                  text={'Services Location Report'}
                 />
-                <Button
-                  loaderColor={'#4B88BC'}
-                  loader={false}
-                  width={172}
-                  title={'Submit'}
-                  gradient={true}
-                  buttonStyle={{
-                    borderWidth: 1,
-                    borderRadius: 25,
-                    marginHorizontal: 12,
-                    marginVertical: 45,
-                  }}
-                />
-              </Block>
-            </ScrollView>
-          )}
+                <View style={styles.checkBoxDiv}>
+                  {updatedImages.map((data, index) => (
+                    <View key={index}>
+                      <Image
+                        source={{ uri: data.path }}
+                        style={{
+                          height: 172,
+                          width: 200,
+                          resizeMode: 'contain',
+                          marginVertical: 6,
+                          marginRight: 6,
+                        }}
+                      />
+                      <TouchableOpacity
+                        style={{
+                          zIndex: 1,
+                          marginTop: -15
+                        }}
+                        onPress={() => {
+                          let old_images = updatedImages;
+                          old_images.splice(index, 1);
+                          setNewImage(old_images);
+                          setFlag(!flag);
+                        }}
+                        activeOpacity={0.6}>
+                        <AIcon name="delete" size={26} color={'red'} />
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                  <TouchableOpacity
+                    style={styles.getImageButton}
+                    onPress={getImage}>
+                    <Icon
+                      type={'font-awesome'}
+                      name={'camera'}
+                      color={'#bbb'}
+                      size={52}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <Block row={true}>
+                  <Button
+                    loaderColor={'#4B88BC'}
+                    onPress={() => save_report()}
+                    width={172}
+                    title={'Save'}
+                    loader={loader}
+                    buttonStyle={{
+                      backgroundColor: '#fff',
+                      borderColor: '#4B88BC',
+                      marginVertical: 45,
+                      borderWidth: 1,
+                      borderRadius: 25,
+                      marginRight: 12,
+                    }}
+                    textStyle={{ color: '#4B88BC' }}
+                  />
+                  <Button
+                    loaderColor={'#4B88BC'}
+                    loader={false}
+                    width={172}
+                    title={'Submit'}
+                    gradient={true}
+                    buttonStyle={{
+                      borderWidth: 1,
+                      borderRadius: 25,
+                      marginHorizontal: 12,
+                      marginVertical: 45,
+                    }}
+                  />
+                </Block>
+              </ScrollView>
+            )}
         </View>
       </View>
     </View>
@@ -737,9 +782,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 21,
   },
-  checkBoxDiv: {flexDirection: 'row', flexWrap: 'wrap', marginVertical: 6},
-  flex: {flex: 1},
-  rightContainer: {flex: 1},
+  checkBoxDiv: { flexDirection: 'row', flexWrap: 'wrap', marginVertical: 6 },
+  flex: { flex: 1 },
+  rightContainer: { flex: 1 },
 });
 
 export default ProjectReport;

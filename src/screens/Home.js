@@ -135,7 +135,8 @@ function Home({navigation}) {
           />
           <TouchableOpacity
             style={{marginTop: 8}}
-            onPress={() => navigation.navigate('ProjectReport')}>
+            // onPress={() => navigation.navigate('ProjectReport')}
+            >
             <Text
               color={'#fff'}
               font={22}
@@ -174,7 +175,7 @@ function Home({navigation}) {
                 color={themeColor}
               />
               <TouchableOpacity
-                onPress={() => navigation.navigate('ProjectReport')}
+                // onPress={() => navigation.navigate('ProjectReport')}
                 style={styles.plusButton}>
                 <Icon
                   type={'antdesign'}

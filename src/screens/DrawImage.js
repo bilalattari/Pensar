@@ -121,9 +121,11 @@ class DrawImage extends React.Component {
       {text: 'C', backgroundColor: '#fff'},
       {text: 'W', backgroundColor: '#82E8FA'},
       {text: 'S', backgroundColor: '#FFF8D9'},
-      {text: 'G', backgroundColor: '#82FA94'},
+      {text: 'SW', backgroundColor: '#82FA94'},
       {text: 'E', backgroundColor: '#FDAC4C'},
+      {text: 'F', backgroundColor: '#f93737'},
       {text: 'RW', backgroundColor: '#B56EFC'},
+      {text: 'P', backgroundColor: '#ED90F0'},
     ];
     let settingsImg = [
       {name: 'text-normal', image: require('../assets/normal-text.png')},
@@ -146,7 +148,7 @@ class DrawImage extends React.Component {
       showRoundText,
       showNormalText,
     } = this.state;
-    console.log(image, 'ghous');
+    console.log(this.props.need.findIndex(item=> item.indexOf(`(C)`) !== -1), 'ghous');
     return (
       <ViewShot
         ref={(e) => (this._viewShot = e)}
@@ -261,6 +263,7 @@ class DrawImage extends React.Component {
               {linePaths.map((coordinates) => {
                 let left = +coordinates.x2 - 12;
                 let top = +coordinates.y2 - 15;
+                console.log("nasir",coordinates.rightLeft)
                 return (
                   <>
                     <Line
@@ -271,7 +274,8 @@ class DrawImage extends React.Component {
                       stroke={coordinates.strokeColor}
                       strokeWidth="6"
                     />
-                    {coordinates.rightLeft ? (
+                    {coordinates.rightLeft ? 
+                    (
                       <Icon
                         style={{
                           left: left,
@@ -574,6 +578,7 @@ class DrawImage extends React.Component {
                   paddingHorizontal: 16,
                 }}>
                 {colors.map((title) => (
+                  this.props.need.findIndex(item=> item.indexOf(`(${title.text})`) !== -1) !== -1 ?
                   <TouchableOpacity
                     onPress={() =>
                       this.handleStrokeColor(title.backgroundColor)
@@ -584,6 +589,8 @@ class DrawImage extends React.Component {
                     ]}>
                     <Text text={title.text} color={themeColor} />
                   </TouchableOpacity>
+                  :
+                  null
                 ))}
               </View>
               <View
