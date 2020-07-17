@@ -259,6 +259,8 @@ class DrawImage extends React.Component {
             }}>
             <Svg>
               {linePaths.map((coordinates) => {
+                let left = +coordinates.x2 - 12;
+                let top = +coordinates.y2 - 15;
                 return (
                   <>
                     <Line
@@ -272,9 +274,9 @@ class DrawImage extends React.Component {
                     {coordinates.rightLeft ? (
                       <Icon
                         style={{
+                          left: left,
+                          top: top,
                           position: 'absolute',
-                          left: +coordinates.x2 - 12,
-                          top: +coordinates.y2 - 15,
                         }}
                         name={
                           +coordinates.x2 > +coordinates.x1
