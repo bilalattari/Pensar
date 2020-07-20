@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   AsyncStorage,
+  ActivityIndicator
 } from 'react-native';
 import Input from '../Component/Input';
 import Button from '../Component/Button';
@@ -18,9 +19,7 @@ function Login({navigation}) {
   const [password, onChangePassword] = React.useState('');
   const [loader, setLoader] = useState(false);
 
-  const loading = (boolean) => {
-    setLoader(boolean);
-  };
+
   function checkUncheck() {
     onChangeChecked(!checked);
   }
@@ -29,13 +28,16 @@ function Login({navigation}) {
     if (email === 'admin@gmail.com') {
       alert('Incorrect email/password');
     } else {
+      setLoader(true)
       auth()
         .signInWithEmailAndPassword(email, password)
         .then(async (res) => {
+          setLoader(false)
           await AsyncStorage.setItem('user', res.user.uid);
           navigation.navigate('Home');
         })
         .catch((err) => {
+          setLoader(false)
           alert(err.message);
         });
     }
@@ -83,6 +85,7 @@ function Login({navigation}) {
               title={'Sign in'}
               height={40}
               gradient={true}
+              loader={loader}
               width={140}
               onPress={() => login()}
               buttonStyle={{
