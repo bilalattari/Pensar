@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow access to your camera</string>
 	<key>CFBundleDisplayName</key>
 	<string>Pensar</string>
 	<key>CFBundleExecutable</key>

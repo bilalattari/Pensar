@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,15 +9,15 @@ import {
   FlatList,
   ImageBackground,
 } from 'react-native';
-import Svg, {Line} from 'react-native-svg';
-import {themeColor} from '../Constant/index';
+import Svg, { Line } from 'react-native-svg';
+import { themeColor } from '../Constant/index';
 import Input from '../Component/Input';
 import Button from '../Component/Button';
 import DeleteModal from '../Component/DeleteModal';
 import Text from '../Component/Text';
 import MovableView from 'react-native-movable-view';
 import ImagePicker from 'react-native-image-picker';
-import {SketchCanvas} from '@terrylinla/react-native-sketch-canvas';
+import { SketchCanvas } from '@terrylinla/react-native-sketch-canvas';
 import ViewShot from 'react-native-view-shot';
 import ModalView from '../Component/Modal';
 import Gestures from 'react-native-easy-gestures';
@@ -64,33 +64,33 @@ class DrawImage extends React.Component {
   //   };
 
   handleLinePath = (arr) => {
-    this.setState({linePaths: arr});
+    this.setState({ linePaths: arr });
   };
   undo = () => {
-    let {linePaths, redoArr} = this.state;
+    let { linePaths, redoArr } = this.state;
     let redoUpdate = redoArr;
     let linePathsUpdate = linePaths;
     let pop = linePathsUpdate.pop();
     redoUpdate.push(pop);
-    this.setState({linePaths: linePathsUpdate, redoArr: redoUpdate});
+    this.setState({ linePaths: linePathsUpdate, redoArr: redoUpdate });
   };
 
   redo = () => {
-    let {linePaths, redoArr} = this.state;
+    let { linePaths, redoArr } = this.state;
     if (redoArr.length > 0) {
       let redoUpdate = redoArr;
       let linePathsUpdate = linePaths;
       let pop = redoUpdate.pop();
       linePathsUpdate.push(pop);
-      this.setState({linePaths: linePathsUpdate, redoArr: redoUpdate});
+      this.setState({ linePaths: linePathsUpdate, redoArr: redoUpdate });
     }
   };
 
   handleStrokeColor = (color) => {
-    this.setState({strokeColor: color});
+    this.setState({ strokeColor: color });
   };
   onImageLoad = () => {
-    this.setState({showButtons: false}, () => {
+    this.setState({ showButtons: false }, () => {
       this._viewShot.capture().then((uri) => {
         console.log('do something with ', uri);
         this.props.onSave(uri);
@@ -107,33 +107,33 @@ class DrawImage extends React.Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        const image = {uri: response.uri};
-        this.state.showImage.push({image, hide: false});
-        this.setState({showImage: this.state.showImage});
+        const image = { uri: response.uri };
+        this.state.showImage.push({ image, hide: false });
+        this.setState({ showImage: this.state.showImage });
       }
     });
   };
   // const canv?as = useRef(null);
   render() {
     console.log('ttt=>', this.state.showRoundText);
-    let {imagePath, onSave, navigation} = this.props;
+    let { imagePath, onSave, navigation } = this.props;
     let colors = [
-      {text: 'C', backgroundColor: '#fff'},
-      {text: 'W', backgroundColor: '#82E8FA'},
-      {text: 'S', backgroundColor: '#FFF8D9'},
-      {text: 'SW', backgroundColor: '#82FA94'},
-      {text: 'E', backgroundColor: '#FDAC4C'},
-      {text: 'F', backgroundColor: '#f93737'},
-      {text: 'RW', backgroundColor: '#B56EFC'},
-      {text: 'P', backgroundColor: '#ED90F0'},
+      { text: 'C', backgroundColor: '#fff' },
+      { text: 'W', backgroundColor: '#82E8FA' },
+      { text: 'S', backgroundColor: '#FFF8D9' },
+      { text: 'SW', backgroundColor: '#82FA94' },
+      { text: 'E', backgroundColor: '#FDAC4C' },
+      { text: 'F', backgroundColor: '#f93737' },
+      { text: 'RW', backgroundColor: '#B56EFC' },
+      { text: 'P', backgroundColor: '#ED90F0' },
     ];
     let settingsImg = [
-      {name: 'text-normal', image: require('../assets/normal-text.png')},
-      {name: 'text_round', image: require('../assets/text_round.png')},
-      {name: 'text', image: require('../assets/text.png')},
-      {name: 'image', image: require('../assets/image.png')},
-      {name: 'vertical', image: require('../assets/vertical.png')},
-      {name: 'horizontal', image: require('../assets/horizontal.png')},
+      { name: 'text-normal', image: require('../assets/normal-text.png') },
+      { name: 'text_round', image: require('../assets/text_round.png') },
+      { name: 'text', image: require('../assets/text.png') },
+      { name: 'image', image: require('../assets/image.png') },
+      { name: 'vertical', image: require('../assets/vertical.png') },
+      { name: 'horizontal', image: require('../assets/horizontal.png') },
     ];
     let {
       linePaths,
@@ -148,13 +148,13 @@ class DrawImage extends React.Component {
       showRoundText,
       showNormalText,
     } = this.state;
-    console.log(this.props.need.findIndex(item=> item.indexOf(`(C)`) !== -1), 'ghous');
+    console.log(this.props.need.findIndex(item => item.indexOf(`(C)`) !== -1), 'ghous');
     return (
       <ViewShot
         ref={(e) => (this._viewShot = e)}
-        style={{flex: 1, height: '100%', width: '100%'}}>
+        style={{ flex: 1, height: '100%', width: '100%' }}>
         <ImageBackground
-          source={{uri: imagePath}}
+          source={{ uri: imagePath }}
           style={{
             flex: 1,
             height: '100%',
@@ -204,8 +204,8 @@ class DrawImage extends React.Component {
               fontSize: 20,
               fontColor: 'red',
               overlay: 'TextOnSketch',
-              anchor: {x: 0, y: 1},
-              position: {x: 100, y: 200},
+              anchor: { x: 0, y: 1 },
+              position: { x: 100, y: 200 },
               coordinate: 'Absolute',
               alignment: 'Center',
               lineHeightMultiple: 1.2,
@@ -213,13 +213,13 @@ class DrawImage extends React.Component {
           />
           {showButtons && (
             <View style={styles.topBottomView}>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
                   onPress={() => this.props.hideDraw()}
                   style={styles.undeRedoButton}>
                   <Image
                     source={require('../assets/218_Arrow_Arrows_Back-512.png')}
-                    style={{height: 20, width: 20}}
+                    style={{ height: 20, width: 20 }}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -227,7 +227,7 @@ class DrawImage extends React.Component {
                   style={styles.undeRedoButton}>
                   <Image
                     source={require('../assets/Path91.png')}
-                    style={{height: 20, width: 20}}
+                    style={{ height: 20, width: 20 }}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -235,7 +235,7 @@ class DrawImage extends React.Component {
                   style={styles.undeRedoButton}>
                   <Image
                     source={require('../assets/circular-arrow.png')}
-                    style={{height: 20, width: 20}}
+                    style={{ height: 20, width: 20 }}
                   />
                 </TouchableOpacity>
               </View>
@@ -245,7 +245,7 @@ class DrawImage extends React.Component {
                 onPress={() => this.onImageLoad()}
                 backgroundColor={'#fff'}
                 width={172}
-                textStyle={{color: '#000'}}
+                textStyle={{ color: '#000' }}
               />
             </View>
           )}
@@ -263,7 +263,7 @@ class DrawImage extends React.Component {
               {linePaths.map((coordinates) => {
                 let left = +coordinates.x2 - 12;
                 let top = +coordinates.y2 - 15;
-                console.log("nasir",coordinates.rightLeft)
+                console.log("nasir", coordinates.rightLeft)
                 return (
                   <>
                     <Line
@@ -274,23 +274,23 @@ class DrawImage extends React.Component {
                       stroke={coordinates.strokeColor}
                       strokeWidth="6"
                     />
-                    {coordinates.rightLeft ? 
-                    (
-                      <Icon
-                        style={{
-                          left: left,
-                          top: top,
-                          position: 'absolute',
-                        }}
-                        name={
-                          +coordinates.x2 > +coordinates.x1
-                            ? 'caret-right'
-                            : 'caret-left'
-                        }
-                        size={30}
-                        color={coordinates.strokeColor}
-                      />
-                    ) : null}
+                    {coordinates.rightLeft ?
+                      (
+                        <Icon
+                          style={{
+                            left: left,
+                            top: top,
+                            position: 'absolute',
+                          }}
+                          name={
+                            +coordinates.x2 > +coordinates.x1
+                              ? 'caret-right'
+                              : 'caret-left'
+                          }
+                          size={30}
+                          color={coordinates.strokeColor}
+                        />
+                      ) : null}
                     {coordinates.topBottom ? (
                       <Icon
                         style={{
@@ -356,115 +356,133 @@ class DrawImage extends React.Component {
           {/* <View style={{flex: 1,backgroundColor: "red",zIndex: 1200}}> */}
           {showText.map((v, i) => {
             return (
-              <Gestures
-                style={{
-                  zIndex: 1200,
-                  width: 120,
-                  position: 'absolute',
-                  marginTop: 80,
-                  marginLeft: 5,
-                }}
-                key={i}>
-                <TextInput
-                  placeholder={'Enter text'}
-                  value={v.value}
-                  blurOnSubmit={true}
-                  onChangeText={(text) => {
-                    showText[i].value = text;
-                    this.setState({
-                      showText: showText,
-                    });
+              !v.hide && (
+                <Gestures
+                  style={{
+                    zIndex: 1200,
+                    width: 120,
+                    position: 'absolute',
+                    marginTop: 80,
+                    marginLeft: 5,
                   }}
-                  placeholderTextColor={'#ccc'}
-                  multiline={true}
-                  onFocus={() => {
-                    showText[i].focused = true;
-                    this.setState({showText: showText});
-                  }}
-                  style={[
-                    {
-                      color: '#000',
-                      width: '100%',
-                      zIndex: 1,
-                      fontSize: 20,
-                      backgroundColor: '#fff',
-                      borderColor: v.color,
-                      borderWidth: 2,
-                    },
-                  ]}
-                  onBlur={() => {
-                    showText[i].focused = false;
-                    this.setState({showText: showText});
-                  }}
-                />
-                {showButtons && (
-                  <View style={styles.dragIcon}>
-                    <Icon name="arrow-move" size={18} color="#000" />
-                  </View>
-                )}
-              </Gestures>
+                  key={i}>
+                  <TextInput
+                    placeholder={'Enter text'}
+                    value={v.value}
+                    blurOnSubmit={true}
+                    onChangeText={(text) => {
+                      showText[i].value = text;
+                      this.setState({
+                        showText: showText,
+                      });
+                    }}
+                    placeholderTextColor={'#ccc'}
+                    multiline={true}
+                    onFocus={() => {
+                      showText[i].focused = true;
+                      this.setState({ showText: showText });
+                    }}
+                    style={[
+                      {
+                        color: '#000',
+                        width: '100%',
+                        zIndex: 1,
+                        fontSize: 20,
+                        backgroundColor: '#fff',
+                        borderColor: v.color,
+                        borderWidth: 2,
+                      },
+                    ]}
+                    onBlur={() => {
+                      showText[i].focused = false;
+                      this.setState({ showText: showText });
+                    }}
+                  />
+                  {showButtons && (
+                    <TouchableOpacity
+                      onLongPress={() => {
+                        this.setState({
+                          deleteModal: true,
+                          delItem: { i, v, item: "text" },
+                        })
+                      }}
+                      style={styles.dragIcon}>
+                      <Icon name="arrow-move" size={18} color="#000" />
+                    </TouchableOpacity>
+                  )}
+                </Gestures>
+              )
             );
           })}
           {showNormalText.map((v, i) => {
             return (
-              <Gestures
-                style={{
-                  zIndex: 1200,
-                  maxWidth: 100,
-                  position: 'absolute',
-                  marginTop: 80,
-                  marginLeft: 5,
-                }}
-                key={i}>
-                <TextInput
-                  placeholder={'Enter text'}
-                  value={v.value}
-                  blurOnSubmit={true}
-                  onChangeText={(text) => {
-                    showNormalText[i].value = text;
-                    this.setState({
-                      showNormalText: showNormalText,
-                    });
+              !v.hide && (
+                <Gestures
+                  style={{
+                    zIndex: 1200,
+                    maxWidth: 100,
+                    position: 'absolute',
+                    marginTop: 80,
+                    marginLeft: 5,
                   }}
-                  placeholderTextColor={'#ccc'}
-                  multiline={true}
-                  onFocus={() => {
-                    showNormalText[i].focused = true;
-                    this.setState({showNormalText: showNormalText});
-                  }}
-                  style={[
-                    {
-                      color: v.color,
-                      width: '100%',
-                      zIndex: 1,
-                      fontSize: 20,
-                      backgroundColor: 'transparent',
-                      borderColor: v.color,
-                      borderWidth: 2,
-                    },
-                    !v.focused
-                      ? {
+                  key={i}>
+                  <TextInput
+                    placeholder={'Enter text'}
+                    value={v.value}
+                    blurOnSubmit={true}
+                    onChangeText={(text) => {
+                      showNormalText[i].value = text;
+                      this.setState({
+                        showNormalText: showNormalText,
+                      });
+                    }}
+                    placeholderTextColor={'#ccc'}
+                    multiline={true}
+                    onFocus={() => {
+                      showNormalText[i].focused = true;
+                      this.setState({ showNormalText: showNormalText });
+                    }}
+                    style={[
+                      {
+                        color: v.color,
+                        width: '100%',
+                        zIndex: 1,
+                        fontSize: 20,
+                        backgroundColor: 'transparent',
+                        borderColor: v.color,
+                        borderWidth: 2,
+                      },
+                      !v.focused
+                        ? {
                           borderWidth: 0,
                         }
-                      : null,
-                  ]}
-                  onBlur={() => {
-                    showNormalText[i].focused = false;
-                    this.setState({showNormalText: showNormalText});
-                  }}
-                />
-                {showButtons && (
-                  <View style={styles.dragIcon}>
-                    <Icon name="arrow-move" size={18} color="#000" />
-                  </View>
-                )}
-              </Gestures>
+                        : null,
+                    ]}
+                    onBlur={() => {
+                      showNormalText[i].focused = false;
+                      this.setState({ showNormalText: showNormalText });
+                    }}
+                  />
+                  {showButtons && (
+                    <TouchableOpacity
+                      onLongPress={() => {
+                        this.setState({
+                          deleteModal: true,
+                          delItem: { i, v, item: "text-normal" },
+                        })
+                      }}
+                      style={styles.dragIcon}>
+                      <Icon name="arrow-move" size={18} color="#000" />
+                    </TouchableOpacity>
+                  )}
+                </Gestures>
+              )
             );
           })}
           {showImage.map((v, i) => {
             return (
               !v.hide && (
-                <Gestures key={i} style={{zIndex: 1200, width: 200}}>
+                <Gestures key={i} style={{ zIndex: 1200, width: 200 }}>
                   <TouchableOpacity
                     onLongPress={() => {
                       showImage[i].hide = true;
@@ -475,7 +493,7 @@ class DrawImage extends React.Component {
                     }}
                     activeOpacity={0.8}>
                     <Image
-                      source={{uri: v.image.uri}}
+                      source={{ uri: v.image.uri }}
                       style={{
                         height: 200,
                         width: 200,
@@ -489,7 +507,6 @@ class DrawImage extends React.Component {
             );
           })}
           {showRoundText.map((v, i) => {
-            console.log('hide', v.hide);
             return (
               !v.hide && (
                 <MovableView
@@ -531,18 +548,18 @@ class DrawImage extends React.Component {
                         textAlign: 'center',
                       },
                     ]}
-                    onBlur={() => this.setState({focused: false})}
+                    onBlur={() => this.setState({ focused: false })}
                   />
                   {showButtons && (
                     <TouchableOpacity
                       onLongPress={() => {
                         this.setState({
                           deleteModal: true,
-                          delItem: {i, v},
+                          delItem: { i, v, item: "text_round" },
                         });
                       }}
                       activeOpacity={0.8}
-                      style={[styles.dragIcon, {right: -10, top: 30}]}>
+                      style={[styles.dragIcon, { right: -10, top: 30 }]}>
                       <Icon name="arrow-move" size={18} color="#000" />
                     </TouchableOpacity>
                   )}
@@ -552,18 +569,42 @@ class DrawImage extends React.Component {
           })}
           {this.state.deleteModal && (
             <DeleteModal
-              cancel={() => this.setState({deleteModal: false, delIndex: 0})}
+              cancel={() => this.setState({ deleteModal: false, delIndex: 0 })}
               confirm={() => {
-                showRoundText.splice(this.state.delItem.i, 1, {
-                  value: this.state.delItem.v.value,
-                  color: this.state.delItem.v.strokeColor,
-                  hide: true,
-                });
-                this.setState({
-                  showRoundText: showRoundText,
-                  deleteModal: false,
-                  delIndex: 0,
-                });
+                if (this.state.delItem.item === "text-normal") {
+                  showNormalText.splice(this.state.delItem.i, 1, {
+                    value: this.state.delItem.v.value,
+                    color: this.state.delItem.v.strokeColor,
+                    hide: true,
+                  });
+                  this.setState({
+                    showNormalText: showNormalText,
+                    deleteModal: false,
+                    delIndex: 0,
+                  });
+                } else if (this.state.delItem.item === "text_round") {
+                  showRoundText.splice(this.state.delItem.i, 1, {
+                    value: this.state.delItem.v.value,
+                    color: this.state.delItem.v.strokeColor,
+                    hide: true,
+                  });
+                  this.setState({
+                    showRoundText: showRoundText,
+                    deleteModal: false,
+                    delIndex: 0,
+                  });
+                } else {
+                  showText.splice(this.state.delItem.i, 1, {
+                    value: this.state.delItem.v.value,
+                    color: this.state.delItem.v.strokeColor,
+                    hide: true,
+                  });
+                  this.setState({
+                    showText: showText,
+                    deleteModal: false,
+                    delIndex: 0,
+                  });
+                }
               }}
             />
           )}
@@ -578,19 +619,19 @@ class DrawImage extends React.Component {
                   paddingHorizontal: 16,
                 }}>
                 {colors.map((title) => (
-                  this.props.need.findIndex(item=> item.indexOf(`(${title.text})`) !== -1) !== -1 ?
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.handleStrokeColor(title.backgroundColor)
-                    }
-                    style={[
-                      styles.undeRedoButton,
-                      {marginRight: 4, backgroundColor: title.backgroundColor},
-                    ]}>
-                    <Text text={title.text} color={themeColor} />
-                  </TouchableOpacity>
-                  :
-                  null
+                  this.props.need.findIndex(item => item.indexOf(`(${title.text})`) !== -1) !== -1 ?
+                    <TouchableOpacity
+                      onPress={() =>
+                        this.handleStrokeColor(title.backgroundColor)
+                      }
+                      style={[
+                        styles.undeRedoButton,
+                        { marginRight: 4, backgroundColor: title.backgroundColor },
+                      ]}>
+                      <Text text={title.text} color={themeColor} />
+                    </TouchableOpacity>
+                    :
+                    null
                 ))}
               </View>
               <View
@@ -609,8 +650,9 @@ class DrawImage extends React.Component {
                           value: '',
                           color: strokeColor,
                           focused: false,
+                          hide: false
                         });
-                        this.setState({showText: showText});
+                        this.setState({ showText: showText });
                       } else if (img.name === 'image') {
                         this.getImage();
                       } else if (img.name === 'text_round') {
@@ -619,7 +661,7 @@ class DrawImage extends React.Component {
                           color: strokeColor,
                           hide: false,
                         });
-                        this.setState({showRoundText: showRoundText});
+                        this.setState({ showRoundText: showRoundText });
                       } else if (img.name === 'vertical') {
                         this.setState({
                           topBottom: !this.state.topBottom,
@@ -636,10 +678,10 @@ class DrawImage extends React.Component {
                           color: strokeColor,
                           hide: false,
                         });
-                        this.setState({showNormalText: showNormalText});
+                        this.setState({ showNormalText: showNormalText });
                       }
                     }}
-                    style={[styles.undeRedoButton, {marginRight: 10}]}>
+                    style={[styles.undeRedoButton, { marginRight: 10 }]}>
                     <Image
                       source={img.image}
                       style={{
@@ -691,9 +733,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 21,
   },
-  checkBoxDiv: {flexDirection: 'row', flexWrap: 'wrap', marginVertical: 6},
-  flex: {flex: 1},
-  rightContainer: {flex: 1},
+  checkBoxDiv: { flexDirection: 'row', flexWrap: 'wrap', marginVertical: 6 },
+  flex: { flex: 1 },
+  rightContainer: { flex: 1 },
   lineBox: {
     backgroundColor: '#fff',
     width: 40,

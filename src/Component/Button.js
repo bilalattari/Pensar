@@ -36,7 +36,7 @@ export default CustomButton = (props) =>
           <ActivityIndicator
             color={props.loaderColor ? props.loaderColor : '#fff'}
             size={'large'}
-          />
+          />  
         ) : (
           <Text text={props.title} bold={true} style={{letterSpacing: 1}} />
         )}
