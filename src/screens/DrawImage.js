@@ -62,7 +62,6 @@ class DrawImage extends React.Component {
   //   const loading = (boolean) => {
   //     setLoader(boolean);
   //   };
-
   handleLinePath = (arr) => {
     this.setState({ linePaths: arr });
   };
@@ -128,7 +127,7 @@ class DrawImage extends React.Component {
       { text: 'P', backgroundColor: '#ED90F0' },
     ];
     let settingsImg = [
-      { name: 'text-normal', image: require('../assets/normal-text.png') },
+      // { name: 'text-normal', image: require('../assets/normal-text.png') },
       { name: 'text_round', image: require('../assets/text_round.png') },
       { name: 'text', image: require('../assets/text.png') },
       { name: 'image', image: require('../assets/image.png') },
@@ -148,7 +147,6 @@ class DrawImage extends React.Component {
       showRoundText,
       showNormalText,
     } = this.state;
-    console.log(this.props.need.findIndex(item => item.indexOf(`(C)`) !== -1), 'ghous');
     return (
       <ViewShot
         ref={(e) => (this._viewShot = e)}
@@ -256,14 +254,13 @@ class DrawImage extends React.Component {
               bottom: 0,
               left: 0,
               right: 0,
-              top: 0,
+              top: -30,
               zIndex: 1,
             }}>
             <Svg>
               {linePaths.map((coordinates) => {
                 let left = +coordinates.x2 - 12;
                 let top = +coordinates.y2 - 15;
-                console.log("nasir", coordinates.rightLeft)
                 return (
                   <>
                     <Line
@@ -276,6 +273,7 @@ class DrawImage extends React.Component {
                     />
                     {coordinates.rightLeft ?
                       (
+
                         <Icon
                           style={{
                             left: left,
