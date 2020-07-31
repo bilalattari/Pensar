@@ -9,7 +9,7 @@ import {
   FlatList,
   ImageBackground,
 } from 'react-native';
-import Svg, { Line } from 'react-native-svg';
+import Svg, { Line, Text as TextSVG } from 'react-native-svg';
 import { themeColor } from '../Constant/index';
 import Input from '../Component/Input';
 import Button from '../Component/Button';
@@ -270,7 +270,9 @@ class DrawImage extends React.Component {
                       y2={coordinates.y2}
                       stroke={coordinates.strokeColor}
                       strokeWidth="6"
+                      strokeDasharray={'80,40'}
                     />
+                  
                     {coordinates.rightLeft ?
                       (
 

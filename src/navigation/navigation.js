@@ -6,7 +6,6 @@ import SplashScreen from '../screens/Splash';
 import Home from '../screens/Home';
 import DrawImage from '../screens/DrawImage';
 import ProjectReport from '../screens/AddProject';
-
 const SplashStack = createStackNavigator(
   {
     Splash: {

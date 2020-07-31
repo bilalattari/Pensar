@@ -124,7 +124,7 @@ function Home({navigation}) {
           width: '30%',
           backgroundColor: '#466AA5',
         }}>
-        <View style={{paddingLeft: '8%'}}>
+        <View style={{paddingLeft: '8%',height: "100%"}}>
           <Image
             source={require('../assets/whiteLogo.png')}
             style={{
@@ -147,9 +147,10 @@ function Home({navigation}) {
           <TouchableOpacity style={{marginTop: 8}}>
             <Text color={'#fff'} font={22} bold={true} text={'Projects'} />
           </TouchableOpacity>
-          <TouchableOpacity style={{marginTop: 8}}>
+          <TouchableOpacity style={{marginTop: 8,}}>
             <Text color={'#fff'} font={22} bold={true} text={'Settings'} />
           </TouchableOpacity>
+          
           <TouchableOpacity
             onPress={() => {
               auth()
